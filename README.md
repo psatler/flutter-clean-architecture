@@ -16,6 +16,10 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 
+## Backend
+
+The swagger documentation to communicate with the backend can be found [here](http://fordevs.herokuapp.com/api-docs/#/) 
+
 ## Third party packages
 
 > ### Dependencies
