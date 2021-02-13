@@ -16,12 +16,15 @@ class RemoteAuthentication {
   });
 
   Future<void> auth() async {
-    await httpClient.request(url: url);
+    await httpClient.request(url: url, method: 'post');
   }
 }
 
 abstract class HttpClient {
-  Future<void> request({@required String url}) async {}
+  Future<void> request({
+    @required String url,
+    @required String method,
+  }) async {}
 }
 
 // mocks and spies
@@ -36,6 +39,9 @@ void main() {
     await sut.auth();
 
     // verifying we are calling the request method with the right URL
-    verify(httpClient.request(url: url));
+    verify(httpClient.request(
+      url: url,
+      method: 'post',
+    ));
   });
 }
