@@ -31,12 +31,18 @@ class ClientSpy extends Mock implements Client {
 void main() {
   // making group of tests to leverage similar setups for the different groups under tests
 
+  HttpAdapter sut;
+  ClientSpy client;
+  String url;
+
+  setUp(() {
+    client = ClientSpy();
+    sut = HttpAdapter(client);
+    url = faker.internet.httpUrl();
+  });
+
   group('POST', () {
     test('Should call post with correct values', () async {
-      final client = ClientSpy();
-      final sut = HttpAdapter(client);
-      final url = faker.internet.httpUrl();
-
       await sut.request(url: url, method: 'post');
 
       // verifying that we call client.post internally (inside the HttpAdater class)
