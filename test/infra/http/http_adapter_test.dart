@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:faker/faker.dart';
 import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
@@ -13,6 +15,7 @@ class HttpAdapter {
   Future<void> request({
     @required String url,
     @required String method,
+    Map body,
   }) async {
     final headers = {
       'content-type': 'application/json',
@@ -21,6 +24,7 @@ class HttpAdapter {
     await client.post(
       url,
       headers: headers,
+      body: jsonEncode(body),
     );
   }
 }
@@ -43,7 +47,12 @@ void main() {
 
   group('POST', () {
     test('Should call post with correct values', () async {
-      await sut.request(url: url, method: 'post');
+      final body = {'any_key': 'any_value'};
+      await sut.request(
+        url: url,
+        method: 'post',
+        body: body,
+      );
 
       // verifying that we call client.post internally (inside the HttpAdater class)
       verify(client.post(
@@ -52,6 +61,7 @@ void main() {
           'content-type': 'application/json',
           'accept': 'application/json',
         },
+        body: jsonEncode(body),
       ));
     });
   });
