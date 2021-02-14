@@ -7,12 +7,14 @@ import 'package:test/test.dart';
 
 import 'package:meta/meta.dart';
 
-class HttpAdapter {
+import 'package:flutter_clean_arch/data/http/http_client.dart';
+
+class HttpAdapter implements HttpClient {
   final Client client;
 
   HttpAdapter(this.client);
 
-  Future<void> request({
+  Future<Map> request({
     @required String url,
     @required String method,
     Map body,
@@ -23,11 +25,13 @@ class HttpAdapter {
     };
     final jsonBody = body != null ? jsonEncode(body) : null;
 
-    await client.post(
+    final response = await client.post(
       url,
       headers: headers,
       body: jsonBody,
     );
+
+    return jsonDecode(response.body);
   }
 }
 
@@ -49,6 +53,12 @@ void main() {
 
   group('POST', () {
     test('Should call post with correct values', () async {
+      when(client.post(
+        any,
+        headers: anyNamed('headers'),
+        body: anyNamed('body'),
+      )).thenAnswer((_) async => Response('{"any_key": "any_value"}', 200));
+
       final body = {'any_key': 'any_value'};
       await sut.request(
         url: url,
@@ -68,6 +78,9 @@ void main() {
     });
 
     test('Should call post without body', () async {
+      when(client.post(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => Response('{"any_key": "any_value"}', 200));
+
       await sut.request(url: url, method: 'post');
 
       // verifying that we call client.post internally (inside the HttpAdater class)
@@ -75,6 +88,15 @@ void main() {
         any,
         headers: anyNamed('headers'),
       ));
+    });
+
+    test('Should return data if post returns 200', () async {
+      when(client.post(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => Response('{"any_key": "any_value"}', 200));
+
+      final response = await sut.request(url: url, method: 'post');
+
+      expect(response, {'any_key': 'any_value'});
     });
   });
 }
