@@ -14,7 +14,14 @@ class HttpAdapter {
     @required String url,
     @required String method,
   }) async {
-    await client.post(url);
+    final headers = {
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+    await client.post(
+      url,
+      headers: headers,
+    );
   }
 }
 
@@ -33,7 +40,13 @@ void main() {
       await sut.request(url: url, method: 'post');
 
       // verifying that we call client.post internally (inside the HttpAdater class)
-      verify(client.post(url));
+      verify(client.post(
+        url,
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+        },
+      ));
     });
   });
 }
