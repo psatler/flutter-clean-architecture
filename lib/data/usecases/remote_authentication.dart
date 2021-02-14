@@ -7,7 +7,7 @@ import '../../domain/entities/entities.dart';
 import '../http/http.dart';
 import '../models/models.dart';
 
-class RemoteAuthentication {
+class RemoteAuthentication implements Authentication {
   final HttpClient httpClient;
   final String url;
 
@@ -47,6 +47,7 @@ class RemoteAuthenticationParams {
         password: params.password,
       );
 
-  // let the json transformation here instead of the domain class so we decouple it from knowing what params each http client needs
+  // let the json transformation here instead of the domain class (lib/domain/usecases/authentication.dart)
+  // so we decouple it from knowing what params each http client needs
   Map toJson() => {'email': email, 'password': password};
 }
