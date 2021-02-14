@@ -5,39 +5,7 @@ import 'package:http/http.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:meta/meta.dart';
-
-import 'package:flutter_clean_arch/data/http/http_client.dart';
-
-class HttpAdapter implements HttpClient {
-  final Client client;
-
-  HttpAdapter(this.client);
-
-  Future<Map> request({
-    @required String url,
-    @required String method,
-    Map body,
-  }) async {
-    final headers = {
-      'content-type': 'application/json',
-      'accept': 'application/json',
-    };
-    final jsonBody = body != null ? jsonEncode(body) : null;
-
-    final response = await client.post(
-      url,
-      headers: headers,
-      body: jsonBody,
-    );
-
-    if (response.statusCode == 200) {
-      return response.body.isEmpty ? null : jsonDecode(response.body);
-    }
-
-    return null;
-  }
-}
+import 'package:flutter_clean_arch/infra/http/http.dart';
 
 class ClientSpy extends Mock implements Client {
 } // Client from the Http library
