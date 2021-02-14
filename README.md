@@ -22,10 +22,11 @@ The swagger documentation to communicate with the backend can be found [here](ht
 
 ## Third party packages
 
-> ### Dependencies
+> #### Dependencies
 - [Meta](https://pub.dev/packages/meta): Annotations for Static Analysis
+- [Http](https://pub.dev/packages/http/install): A composable, Future-based library for making HTTP requests.
 
-> ### Dev Dependencies
+> #### Dev Dependencies
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.
 - [Mockito](https://pub.dev/packages/mockito): Mock library for Dart inspired by the [Java's Mockito library](https://github.com/mockito/mockito).
 - [Faker](https://pub.dev/packages/faker): A library for Dart that generates fake data.
