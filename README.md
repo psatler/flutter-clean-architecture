@@ -50,7 +50,8 @@ _Flutter run all tests_, so you can run all the tests by pressing **F5**.
     {
       "name": "flutter_clean_arch",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "program": "./lib/main/main.dart"
     }
   ]
 }
