@@ -30,6 +30,11 @@ The swagger documentation to communicate with the backend can be found [here](ht
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.
 - [Mockito](https://pub.dev/packages/mockito): Mock library for Dart inspired by the [Java's Mockito library](https://github.com/mockito/mockito).
 - [Faker](https://pub.dev/packages/faker): A library for Dart that generates fake data.
+- [Flutter Launcher Icons](https://pub.dev/packages/flutter_launcher_icons): A command-line tool which simplifies the task of updating your Flutter app's launcher icon. More complex settings [with flavors can be found here](https://github.com/fluttercommunity/flutter_launcher_icons/tree/master/example/flavors).
+  - the configuration done can be found at the end of the [pubspec.yaml](pubspec.yaml) file.
+  - more pieces of information about _adaptive icons_ can be found [here](https://medium.com/google-design/designing-adaptive-icons-515af294c783).
+  - you need to run the command specified in the [library's docs](https://pub.dev/packages/flutter_launcher_icons#book-guide): `flutter pub run flutter_launcher_icons:main`
+
 
 
 ## VSCode configurations
