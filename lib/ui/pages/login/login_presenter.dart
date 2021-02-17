@@ -9,6 +9,9 @@
 // the UI will rerender after notified via streams.
 
 abstract class LoginPresenter {
+  // a stream which will listen each time we have a new error
+  Stream get emailErrorStream;
+
   void validateEmail(String email);
   void validatePassword(String password);
 }
