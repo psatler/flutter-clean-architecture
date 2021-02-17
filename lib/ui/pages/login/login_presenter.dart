@@ -11,6 +11,7 @@
 abstract class LoginPresenter {
   // a stream which will listen each time we have a new error
   Stream get emailErrorStream;
+  Stream get passwordErrorStream;
 
   void validateEmail(String email);
   void validatePassword(String password);
