@@ -1,0 +1,14 @@
+// this presenter will be a abstract class which will reference the needs that the
+// respective page has (in this case, the needs of the login_page). For example,
+// login_page has to validate the email and password fields typed in.
+
+// so, the LoginPresenter is generic, but his implementation will be related to
+// some third party library such as Mobx, for example. Though, this is going to
+// use Streams (so no 3rd party libs) and the name will be StreamLoginPresenter.
+// Therefore, depending on the action made by the user, validations will occur and
+// the UI will rerender after notified via streams.
+
+abstract class LoginPresenter {
+  void validateEmail(String email);
+  void validatePassword(String password);
+}
