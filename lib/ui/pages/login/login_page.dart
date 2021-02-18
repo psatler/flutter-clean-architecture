@@ -35,6 +35,11 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               );
+            } else {
+              if (Navigator.canPop(context)) {
+                // closing the dialog with the loading indicator
+                Navigator.of(context).pop();
+              }
             }
           });
 
