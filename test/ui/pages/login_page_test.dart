@@ -201,4 +201,17 @@ void main() {
     final button = tester.widget<RaisedButton>(find.byType(RaisedButton));
     expect(button.onPressed, null);
   });
+
+  testWidgets('Should call authentication on form submit',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    // by dispatching this, we enable the button so it is clickable
+    isFormValidController.add(true);
+    await tester.pump();
+    await tester.tap(find.byType(RaisedButton));
+    await tester.pump();
+
+    verify(presenter.auth()).called(1); // method was called 1 time
+  });
 }
