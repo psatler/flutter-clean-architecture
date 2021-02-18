@@ -256,4 +256,13 @@ void main() {
 
     expect(find.text('main error'), findsOneWidget);
   });
+
+  testWidgets('Should close streams on dispose', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    // this is called at the end of this current test
+    addTearDown(() {
+      verify(presenter.dispose()).called(1);
+    });
+  });
 }
