@@ -16,6 +16,11 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 
+## Version
+
+This was originally built using Flutter 1.22.6
+
+
 ## Backend
 
 The swagger documentation to communicate with the backend can be found [here](http://fordevs.herokuapp.com/api-docs/#/) 
