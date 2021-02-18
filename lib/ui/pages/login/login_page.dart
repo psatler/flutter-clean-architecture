@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                child: SimpleDialog(
+                builder: (context) => SimpleDialog(
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
