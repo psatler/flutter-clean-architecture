@@ -30,6 +30,7 @@ The swagger documentation to communicate with the backend can be found [here](ht
 > #### Dependencies
 - [Meta](https://pub.dev/packages/meta): Annotations for Static Analysis
 - [Http](https://pub.dev/packages/http/install): A composable, Future-based library for making HTTP requests.
+- [Provider](https://pub.dev/packages/provider): A wrapper around InheritedWidget to make them easier to use and more reusable.
 
 > #### Dev Dependencies
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.
