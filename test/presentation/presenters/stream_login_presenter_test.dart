@@ -11,6 +11,7 @@ void main() {
   StreamLoginPresenter sut;
   ValidationSpy validation;
   String email;
+  String password;
 
   PostExpectation mockValidationCall(String field) => when(
         validation.validate(
@@ -28,15 +29,16 @@ void main() {
     validation = ValidationSpy();
     sut = StreamLoginPresenter(validation: validation);
     email = faker.internet.email();
+    password = faker.internet.password();
 
     // mocking successful validation
     mockValidation();
   });
 
-  test('Should call validation with email', () {
+  test('Should call validation with correct email', () {
     sut.validateEmail(email);
 
-    verify(validation.validate(field: 'Email', value: email)).called(1);
+    verify(validation.validate(field: 'email', value: email)).called(1);
   });
 
   test('Should emit email error if validation fails', () {
@@ -82,5 +84,11 @@ void main() {
     // user typed two times, so validateEmail is called two times as well
     sut.validateEmail(email);
     sut.validateEmail(email);
+  });
+
+  test('Should call validation with correct password', () {
+    sut.validatePassword(password);
+
+    verify(validation.validate(field: 'password', value: password)).called(1);
   });
 }
