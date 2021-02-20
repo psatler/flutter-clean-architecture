@@ -46,4 +46,18 @@ void main() {
 
     sut.validateEmail(email);
   });
+
+  test('Should ONLY emit error is error is different than the previous one',
+      () {
+    mockValidation(returnValue: 'error');
+
+    // expecting the callback to be called only one time
+    sut.emailErrorStream
+        .listen(expectAsync1((error) => expect(error, 'error')));
+    // expectLater(sut.emailErrorStream, emitsInOrder(['error']));
+
+    // user typed two times, so validateEmail is called two times as well
+    sut.validateEmail(email);
+    sut.validateEmail(email);
+  });
 }

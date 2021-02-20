@@ -17,8 +17,9 @@ class StreamLoginPresenter {
 
   var _state = LoginState();
 
-  Stream<String> get emailErrorStream =>
-      _controller.stream.map((state) => state.emailError);
+  Stream<String> get emailErrorStream => _controller.stream
+      .map((state) => state.emailError)
+      .distinct(); // Skips data events if they are equal to the previous data event.
 
   StreamLoginPresenter({@required this.validation});
 
