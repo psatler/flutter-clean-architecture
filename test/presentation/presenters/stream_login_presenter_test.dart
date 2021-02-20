@@ -43,10 +43,25 @@ void main() {
   ValidationSpy validation;
   String email;
 
+  PostExpectation mockValidationCall(String field) => when(
+        validation.validate(
+          field: field != null ? field : anyNamed('field'),
+          value: anyNamed('value'),
+        ),
+      );
+
+  void mockValidation({String field, String returnValue}) {
+    // when testing success, we don't need to pass value as we won't return any error
+    mockValidationCall(field).thenReturn(returnValue);
+  }
+
   setUp(() {
     validation = ValidationSpy();
     sut = StreamLoginPresenter(validation: validation);
     email = faker.internet.email();
+
+    // mocking successful validation
+    mockValidation();
   });
 
   test('Should call validation with email', () {
@@ -56,9 +71,7 @@ void main() {
   });
 
   test('Should emit email error if validation fails', () {
-    when(validation.validate(
-            field: anyNamed('field'), value: anyNamed('value')))
-        .thenReturn('error');
+    mockValidation(returnValue: 'error');
 
     expectLater(sut.emailErrorStream, emits('error'));
 
