@@ -60,4 +60,18 @@ void main() {
     sut.validateEmail(email);
     sut.validateEmail(email);
   });
+
+  test('Should emit the event stating if the form is valid or not', () {
+    mockValidation(returnValue: 'error');
+
+    // expecting the callback to be called only one time
+    sut.emailErrorStream
+        .listen(expectAsync1((error) => expect(error, 'error')));
+    sut.isFormValidStream
+        .listen(expectAsync1((isValid) => expect(isValid, false)));
+
+    // user typed two times, so validateEmail is called two times as well
+    sut.validateEmail(email);
+    sut.validateEmail(email);
+  });
 }

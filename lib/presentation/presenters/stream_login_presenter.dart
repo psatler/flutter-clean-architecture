@@ -6,6 +6,9 @@ import '../protocols/protocols.dart';
 
 class LoginState {
   String emailError;
+
+  // this is a computed value based on the others
+  bool get isFormValid => false;
 }
 
 class StreamLoginPresenter {
@@ -20,6 +23,8 @@ class StreamLoginPresenter {
   Stream<String> get emailErrorStream => _controller.stream
       .map((state) => state.emailError)
       .distinct(); // Skips data events if they are equal to the previous data event.
+  Stream<bool> get isFormValidStream =>
+      _controller.stream.map((state) => state.isFormValid).distinct();
 
   StreamLoginPresenter({@required this.validation});
 
