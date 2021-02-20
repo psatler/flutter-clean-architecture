@@ -5,12 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-abstract class Validation {
-  String validate({
-    @required String field,
-    @required String value,
-  });
-}
+import 'package:flutter_clean_arch/presentation/protocols/validation.dart';
 
 class LoginState {
   String emailError;
