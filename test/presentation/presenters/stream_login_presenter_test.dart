@@ -131,4 +131,16 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
   });
+
+  test('Should emit valid form if all form fields are valid', () async {
+    sut.emailErrorStream.listen(expectAsync1((error) => expect(error, null)));
+    sut.passwordErrorStream
+        .listen(expectAsync1((error) => expect(error, null)));
+
+    expectLater(sut.isFormValidStream, emitsInOrder([false, true]));
+
+    sut.validateEmail(email);
+    await Future.delayed(Duration.zero); // hack to make emitsInOrder work
+    sut.validatePassword(password);
+  });
 }
