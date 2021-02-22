@@ -1,9 +1,9 @@
 import 'package:faker/faker.dart';
-import 'package:flutter_clean_arch/domain/helpers/helpers.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'package:flutter_clean_arch/domain/entities/entities.dart';
+import 'package:flutter_clean_arch/domain/helpers/helpers.dart';
 import 'package:flutter_clean_arch/domain/usecases/usecases.dart';
 
 import 'package:flutter_clean_arch/presentation/presenters/presenters.dart';
@@ -200,6 +200,20 @@ void main() {
     sut.mainErrorStream.listen(expectAsync1((error) => expect(
           error,
           DomainError.invalidCredentials.description,
+        )));
+
+    await sut.auth();
+  });
+
+  test('Should emit correct events on UnexpectedError', () async {
+    mockAuthenticationError(DomainError.unexpected);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+
+    expectLater(sut.isLoadingStream, emits(false));
+    sut.mainErrorStream.listen(expectAsync1((error) => expect(
+          error,
+          DomainError.unexpected.description,
         )));
 
     await sut.auth();
