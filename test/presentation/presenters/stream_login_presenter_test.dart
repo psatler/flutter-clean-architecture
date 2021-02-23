@@ -218,4 +218,14 @@ void main() {
 
     await sut.auth();
   });
+
+  test('Should NOT emit stream events after dispose', () async {
+    // null should not be emitted after dispose
+    expectLater(sut.emailErrorStream, neverEmits(null));
+
+    sut.dispose();
+
+    // trying to emit events after dispose
+    sut.validateEmail(email);
+  });
 }
