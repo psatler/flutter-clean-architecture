@@ -13,7 +13,12 @@ class EmailValidation implements FieldValidation {
   EmailValidation(this.field);
 
   String validate(String value) {
-    return null;
+    final regex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+    // if null or empty, then is valid. Or if hasMatch, it's also valid
+    final isValid = value?.isNotEmpty != true || regex.hasMatch(value);
+    return isValid ? null : 'Campo inválido';
   }
 }
 
@@ -33,5 +38,12 @@ void main() {
 
   test('Should return null if email is valid', () {
     expect(sut.validate('email@email.com'), null);
+  });
+
+  test('Should return error if email is invalid', () {
+    expect(sut.validate('email.com'), 'Campo inválido');
+    expect(sut.validate('email@.com'), 'Campo inválido');
+    expect(sut.validate('@.com'), 'Campo inválido');
+    // expect(sut.validate('email@a.com'), 'Campo inválido');
   });
 }
