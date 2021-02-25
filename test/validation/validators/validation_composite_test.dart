@@ -1,30 +1,8 @@
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
+import 'package:flutter_clean_arch/validation/validators/validators.dart';
 import 'package:flutter_clean_arch/validation/protocols/protocols.dart';
-import 'package:flutter_clean_arch/presentation/protocols/protocols.dart';
-
-// it will loop through all the validators, running the right one to apply the validation.
-// if one or more validators return an error, we pass this to the screen that is using it.
-// if all validators return null, there is no errors.
-
-class ValidationComposite implements Validation {
-  final List<FieldValidation> validations;
-
-  ValidationComposite(this.validations);
-
-  @override
-  String validate({String field, String value}) {
-    String error;
-    for (final validation in validations.where((v) => v.field == field)) {
-      error = validation.validate(value);
-      if (error?.isNotEmpty == true) {
-        return error;
-      }
-    }
-    return error;
-  }
-}
 
 class FieldValidationSpy extends Mock implements FieldValidation {}
 
@@ -70,7 +48,7 @@ void main() {
     expect(error, null);
   });
 
-  test('Should return first error found', () {
+  test('Should return first error found of the correct field', () {
     mockValidation1('error_1');
     mockValidation2('error_2');
     mockValidation3('error_3');
