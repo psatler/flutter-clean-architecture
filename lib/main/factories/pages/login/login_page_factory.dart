@@ -4,6 +4,6 @@ import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
 Widget makeLoginPage() {
-  final streamLoginPresenter = makeLoginPresenter();
+  final streamLoginPresenter = makeGetxLoginPresenter();
   return LoginPage(streamLoginPresenter);
 }
