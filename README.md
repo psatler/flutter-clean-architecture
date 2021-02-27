@@ -32,7 +32,8 @@ The swagger documentation to communicate with the backend can be found [here](ht
 - [Http](https://pub.dev/packages/http/install): A composable, Future-based library for making HTTP requests.
 - [Provider](https://pub.dev/packages/provider): A wrapper around InheritedWidget to make them easier to use and more reusable.
 - [Equatable](https://pub.dev/packages/equatable): An abstract class that helps to implement equality without needing to explicitly override == and hashCode.
-- [Get](https://pub.dev/packages/get): Open screens/snackbars/dialogs without context, manage states and inject dependencies easily with GetX.
+- [Get](https://pub.dev/packages/get): Open screens/snackbars/dialogs without context, manage states and inject dependencies easily with GetX. 
+  - Pay attention that I'm using version `3.4.2` exactly.
 
 > #### Dev Dependencies
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.
