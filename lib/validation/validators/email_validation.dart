@@ -4,9 +4,11 @@
 // 3) then, for the tests, we would mock the interface and test based on the results of the EmailValidator
 // 4) we would make an implementation of the EmailValidator in the "infra" layer (in case we are using an 3rd party library)
 
+import 'package:equatable/equatable.dart';
+
 import '../protocols/protocols.dart';
 
-class EmailValidation implements FieldValidation {
+class EmailValidation extends Equatable implements FieldValidation {
   final String field;
 
   EmailValidation(this.field);
@@ -19,4 +21,7 @@ class EmailValidation implements FieldValidation {
     final isValid = value?.isNotEmpty != true || regex.hasMatch(value);
     return isValid ? null : 'Campo inválido';
   }
+
+  @override
+  List<Object> get props => [field];
 }
