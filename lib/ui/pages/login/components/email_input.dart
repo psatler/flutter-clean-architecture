@@ -7,6 +7,7 @@ class EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final presenter = Provider.of<LoginPresenter>(context);
+    final focusNode = FocusScope.of(context);
 
     return StreamBuilder<String>(
       stream: presenter.emailErrorStream,
@@ -22,6 +23,7 @@ class EmailInput extends StatelessWidget {
           ),
           onChanged: presenter.validateEmail,
           keyboardType: TextInputType.emailAddress,
+          onEditingComplete: () => focusNode.nextFocus(),
         );
       },
     );
