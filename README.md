@@ -70,3 +70,8 @@ _Flutter run all tests_, so you can run all the tests by pressing **F5**.
   ]
 }
 ```
+
+## Aknowledgements
+
+- [This article](https://medium.com/flutter-community/flutter-design-patterns-0-introduction-5e88cfff6792) shows several design patterns applied to Flutter.
+
