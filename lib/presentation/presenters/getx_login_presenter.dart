@@ -1,3 +1,4 @@
+import 'package:flutter_clean_arch/domain/entities/entities.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 
@@ -10,10 +11,12 @@ import '../protocols/protocols.dart';
 class GetxLoginPresenter extends GetxController implements LoginPresenter {
   final Validation validation;
   final Authentication authentication;
+  final SaveCurrentAccount saveCurrentAccount;
 
   GetxLoginPresenter({
     @required this.validation,
     @required this.authentication,
+    @required this.saveCurrentAccount,
   });
 
   String _email;
@@ -58,10 +61,13 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
     _isLoading.value = true;
 
     try {
-      await authentication.auth(AuthenticationParams(
+      AccountEntity accountEntity =
+          await authentication.auth(AuthenticationParams(
         email: _email,
         password: _password,
       ));
+
+      await saveCurrentAccount.save(accountEntity);
     } on DomainError catch (error) {
       _mainError.value = error.description;
     }
