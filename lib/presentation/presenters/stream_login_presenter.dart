@@ -14,6 +14,7 @@ class LoginState {
   String emailError;
   String passwordError;
   String mainError;
+  String navigateTo;
   bool isLoading = false;
 
   // this is a computed value based on the others
@@ -48,6 +49,9 @@ class StreamLoginPresenter implements LoginPresenter {
       .distinct(); // Skips data events if they are equal to the previous data event.
   Stream<String> get mainErrorStream =>
       _controller.stream.map((state) => state.mainError).distinct();
+
+  Stream<String> get navigateToStream =>
+      _controller.stream.map((state) => state.navigateTo).distinct();
   Stream<bool> get isFormValidStream =>
       _controller.stream.map((state) => state.isFormValid).distinct();
   Stream<bool> get isLoadingStream =>

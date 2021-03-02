@@ -1,5 +1,7 @@
+// the UI below is not coupled to any 3rd party library, so it only use streams
+// and need to dispose them. That's why it is a stateful widget
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
@@ -7,25 +9,37 @@ import '../../components/components.dart';
 import 'components/components.dart';
 import 'login_presenter.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   final LoginPresenter presenter;
 
   LoginPage(this.presenter);
 
   @override
-  Widget build(BuildContext context) {
-    void _hideKeyboard() {
-      final currentFocus = FocusScope.of(context);
+  _LoginPageState createState() => _LoginPageState();
+}
 
-      if (!currentFocus.hasPrimaryFocus) {
-        currentFocus.unfocus();
-      }
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void dispose() {
+    widget.presenter.dispose();
+
+    super.dispose();
+  }
+
+  void _hideKeyboard() {
+    final currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Builder(
         builder: (context) {
-          presenter.isLoadingStream.listen((isLoading) {
+          widget.presenter.isLoadingStream.listen((isLoading) {
             if (isLoading) {
               showLoading(context);
             } else {
@@ -33,15 +47,9 @@ class LoginPage extends StatelessWidget {
             }
           });
 
-          presenter.mainErrorStream.listen((error) {
+          widget.presenter.mainErrorStream.listen((error) {
             if (error != null) {
               showErrorMessage(context: context, message: error);
-            }
-          });
-
-          presenter.navigateToStream.listen((page) {
-            if (page?.isNotEmpty == true) {
-              Get.offAllNamed(page);
             }
           });
 
@@ -58,7 +66,7 @@ class LoginPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(32),
                     child: Provider<LoginPresenter>(
-                      create: (_) => presenter,
+                      create: (_) => widget.presenter,
                       child: Form(
                         child: Column(
                           children: [
