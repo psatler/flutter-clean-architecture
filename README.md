@@ -1,19 +1,23 @@
-# flutter_clean_arch
+<p align="center">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/psatler/flutter-clean-architecture.svg">
 
-A new Flutter project.
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/psatler/flutter-clean-architecture.svg">
 
-## Getting Started
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/psatler/flutter-clean-architecture.svg">
 
-This project is a starting point for a Flutter application.
+  <img alt="Repository Last Commit Date" src="https://img.shields.io/github/last-commit/psatler/flutter-clean-architecture?color=blue">
 
-A few resources to get you started if this is your first Flutter project:
+  <a href="https://www.linkedin.com/in/pablosatler/">
+    <img alt="Made by Pablo Satler" src="https://img.shields.io/badge/made%20by-Pablo%20Satler-blue">
+  </a>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+  <img alt="License" src="https://img.shields.io/github/license/psatler/flutter-clean-architecture?color=blue">
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+</p>
+
+# Flutter Clean Architecture
+
+A survey app developed with clean architecture and SOLID principles in mind
 
 
 ## Version
@@ -23,7 +27,7 @@ This was originally built using Flutter 1.22.6
 
 ## Backend
 
-The swagger documentation to communicate with the backend can be found [here](http://fordevs.herokuapp.com/api-docs/#/) 
+The swagger documentation for the backend the app communicate with can be found [here](http://fordevs.herokuapp.com/api-docs/#/) 
 
 ## Third party packages
 
@@ -34,6 +38,8 @@ The swagger documentation to communicate with the backend can be found [here](ht
 - [Equatable](https://pub.dev/packages/equatable): An abstract class that helps to implement equality without needing to explicitly override == and hashCode.
 - [Get](https://pub.dev/packages/get): Open screens/snackbars/dialogs without context, manage states and inject dependencies easily with GetX. 
   - Pay attention that I'm using version `3.4.2` exactly.
+- [Flutter Secure Storage](https://pub.dev/packages/flutter_secure_storage): provides API to store data in secure storage. Keychain is used in iOS, KeyStore based solution is used in Android.
+  - We need to modify the minSdkVersion to 18 in the `build.gradle` file in the Android project
 
 > #### Dev Dependencies
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.
@@ -68,6 +74,28 @@ _Flutter run all tests_, so you can run all the tests by pressing **F5**.
       "program": "./lib/main/main.dart"
     }
   ]
+}
+```
+
+##### Snippets
+
+Also, it was created a snippets to help initialize the boilerplate for tests.
+To create a snippet, goes to `File -> Preferences -> User Snippets` and then
+create a `dart.json` file. The snippet create use `darttest` as a shortcut.
+
+```json
+{
+	"Flutter unit tests": {
+		"prefix": "darttest",
+		"body": [
+			"import 'package:test/test.dart';",
+			"",
+			"void main() {",
+			" test('', () {});",
+			"}"
+		],
+		"description": "Initial boilerplate for test code"
+	}
 }
 ```
 
