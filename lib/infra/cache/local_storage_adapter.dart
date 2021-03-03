@@ -21,9 +21,6 @@ class LocalStorageAdapter
 
   @override
   Future<String> fetchSecure(String key) async {
-    final token = await secureStorage.read(key: key);
-    return token;
+    return await secureStorage.read(key: key);
   }
-
-  // Future<void> fetchSecure(String key) {}
 }
