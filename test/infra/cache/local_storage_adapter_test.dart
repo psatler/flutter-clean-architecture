@@ -34,7 +34,7 @@ void main() {
       verify(secureStorage.write(key: key, value: value));
     });
 
-// we won't treat the exception here at the infra layer, letting it to be handled at the data layer
+    // we won't treat the exception here at the infra layer, letting it to be handled at the data layer
     test('Should throw if secure throws', () async {
       mockSaveSecureError();
 
@@ -45,9 +45,15 @@ void main() {
   });
 
   group('[adapter method] fetchSecure', () {
+    PostExpectation mockFetchSecureCall() =>
+        when(secureStorage.read(key: anyNamed('key')));
+
     void mockFetchSecure() {
-      when(secureStorage.read(key: anyNamed('key')))
-          .thenAnswer((_) async => value);
+      mockFetchSecureCall().thenAnswer((_) async => value);
+    }
+
+    void mockFetchSecureError() {
+      mockFetchSecureCall().thenThrow(Exception());
     }
 
     setUp(() {
@@ -64,6 +70,14 @@ void main() {
       final fetchedValue = await sut.fetchSecure(key);
 
       expect(fetchedValue, value);
+    });
+
+    test('Should throw if fetchSecure throws', () async {
+      mockFetchSecureError();
+
+      final future = sut.fetchSecure(key);
+
+      expect(future, throwsA(isA<Exception>()));
     });
   });
 }
