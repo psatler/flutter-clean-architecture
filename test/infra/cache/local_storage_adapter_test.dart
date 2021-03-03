@@ -22,23 +22,33 @@ void main() {
     value = faker.guid.guid();
   });
 
-  void mockSaveSecureError() {
-    when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-        .thenThrow(Exception());
-  }
+  group('[adapter method] saveSecure', () {
+    void mockSaveSecureError() {
+      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
+          .thenThrow(Exception());
+    }
 
-  test('Should call save secure with correct parameters', () async {
-    await sut.saveSecure(key: key, value: value);
+    test('Should call save secure with correct parameters', () async {
+      await sut.saveSecure(key: key, value: value);
 
-    verify(secureStorage.write(key: key, value: value));
-  });
+      verify(secureStorage.write(key: key, value: value));
+    });
 
 // we won't treat the exception here at the infra layer, letting it to be handled at the data layer
-  test('Should throw if secure throws', () async {
-    mockSaveSecureError();
+    test('Should throw if secure throws', () async {
+      mockSaveSecureError();
 
-    final future = sut.saveSecure(key: key, value: value);
+      final future = sut.saveSecure(key: key, value: value);
 
-    expect(future, throwsA(isA<Exception>()));
+      expect(future, throwsA(isA<Exception>()));
+    });
+  });
+
+  group('[adapter method] fetchSecure', () {
+    test('Should call fetch secure with correct key', () async {
+      await sut.fetchSecure(key);
+
+      verify(secureStorage.read(key: key));
+    });
   });
 }
