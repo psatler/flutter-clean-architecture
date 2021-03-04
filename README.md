@@ -22,8 +22,8 @@ A survey app developed with clean architecture and SOLID principles in mind
 
 ## Version
 
-This was originally built using Flutter 1.22.6 and on March 3rd was upgraded to Flutter 2.0.0
-
+This was originally built using Flutter 1.22.6 and on March 3rd was upgraded to Flutter 2.0.0. Though, the code was not migrated
+to _null safety_ yet.
 
 ## Backend
 
@@ -44,6 +44,9 @@ The swagger documentation for the backend the app communicate with can be found 
 > #### Dev Dependencies
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.
 - [Mockito](https://pub.dev/packages/mockito): Mock library for Dart inspired by the [Java's Mockito library](https://github.com/mockito/mockito).
+  - Instructions on how to mock using _Null Safety_ can be find [here](https://github.com/dart-lang/mockito/blob/master/NULL_SAFETY_README.md).
+  - To run the _build\_runner_, we do `flutter pub run build_runner build`.
+  - an alternative to Mockito for null safety is [Mocktail](https://pub.dev/packages/mocktail) with no need to code-generation.
 - [Faker](https://pub.dev/packages/faker): A library for Dart that generates fake data.
 - [Flutter Launcher Icons](https://pub.dev/packages/flutter_launcher_icons): A command-line tool which simplifies the task of updating your Flutter app's launcher icon. More complex settings [with flavors can be found here](https://github.com/fluttercommunity/flutter_launcher_icons/tree/master/example/flavors).
   - the configuration done can be found at the end of the [pubspec.yaml](pubspec.yaml) file.
