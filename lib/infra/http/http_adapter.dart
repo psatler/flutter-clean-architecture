@@ -19,6 +19,7 @@ class HttpAdapter implements HttpClient {
       'content-type': 'application/json',
       'accept': 'application/json',
     };
+    final uriUrl = Uri.parse(url);
 
     final jsonBody = body != null ? jsonEncode(body) : null;
     var response = Response('', 500); // defaulting to 500
@@ -26,7 +27,7 @@ class HttpAdapter implements HttpClient {
     try {
       if (method == 'post') {
         response = await client.post(
-          url,
+          uriUrl,
           headers: headers,
           body: jsonBody,
         );

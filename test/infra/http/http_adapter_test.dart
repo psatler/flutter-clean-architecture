@@ -61,7 +61,7 @@ void main() {
 
       // verifying that we call client.post internally (inside the HttpAdater class)
       verify(client.post(
-        url,
+        Uri.parse(url),
         headers: {
           'content-type': 'application/json',
           'accept': 'application/json',
