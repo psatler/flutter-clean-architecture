@@ -22,7 +22,7 @@ A survey app developed with clean architecture and SOLID principles in mind
 
 ## Version
 
-This was originally built using Flutter 1.22.6
+This was originally built using Flutter 1.22.6 and on March 3rd was upgraded to Flutter 2.0.0
 
 
 ## Backend
