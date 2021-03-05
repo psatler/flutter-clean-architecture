@@ -29,10 +29,15 @@ class App extends StatelessWidget {
       title: 'Survey app - Clean Architecture',
       debugShowCheckedModeBanner: false,
       theme: makeTheme(),
-      initialRoute: '/login',
+      initialRoute: '/',
       getPages: [
-        GetPage(name: '/login', page: makeLoginPage),
-        GetPage(name: '/surveys', page: () => Scaffold(body: Text('Surveys'))),
+        GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),
+        GetPage(
+            name: '/login', page: makeLoginPage, transition: Transition.fadeIn),
+        GetPage(
+            name: '/surveys',
+            page: () => Scaffold(body: Text('Surveys')),
+            transition: Transition.fadeIn),
       ],
     );
   }
