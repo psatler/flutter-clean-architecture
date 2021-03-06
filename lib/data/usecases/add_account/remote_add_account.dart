@@ -7,7 +7,7 @@ import '../../../domain/entities/entities.dart';
 import '../../http/http.dart';
 import '../../models/models.dart';
 
-class RemoteAddAccount {
+class RemoteAddAccount implements AddAccount {
   final HttpClient httpClient;
   final String url;
 
@@ -24,6 +24,8 @@ class RemoteAddAccount {
         method: 'post',
         body: body,
       );
+
+      return RemoteAccountModel.fromJson(httpResponse).toEntity();
     } on HttpError catch (error) {
       HttpError.forbidden == error
           ? throw DomainError.emailInUse
