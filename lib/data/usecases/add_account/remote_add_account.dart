@@ -24,8 +24,10 @@ class RemoteAddAccount {
         method: 'post',
         body: body,
       );
-    } catch (error) {
-      throw DomainError.unexpected;
+    } on HttpError catch (error) {
+      HttpError.forbidden == error
+          ? throw DomainError.emailInUse
+          : throw DomainError.unexpected;
     }
   }
 }
