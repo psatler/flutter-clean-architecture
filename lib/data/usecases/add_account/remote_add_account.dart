@@ -18,12 +18,15 @@ class RemoteAddAccount {
 
   Future<AccountEntity> add(AddAccountParams params) async {
     final body = RemoteAddAccountParams.fromDomain(params).toJson();
-
-    final httpResponse = await httpClient.request(
-      url: url,
-      method: 'post',
-      body: body,
-    );
+    try {
+      final httpResponse = await httpClient.request(
+        url: url,
+        method: 'post',
+        body: body,
+      );
+    } catch (error) {
+      throw DomainError.unexpected;
+    }
   }
 }
 
