@@ -10,11 +10,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+// import '../utils/i18n/resources.dart';
 import '../ui/components/components.dart';
 import 'factories/factories.dart';
 
 void main() {
   Provider.debugCheckInvalidValueType = null;
+
+  // R.load(Locale('en', 'US')); // we can load the language here before running the app
 
   runApp(App());
 }

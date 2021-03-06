@@ -8,11 +8,13 @@
 // Therefore, depending on the action made by the user, validations will occur and
 // the UI will rerender after notified via streams.
 
+import '../../helpers/errors/errors.dart';
+
 abstract class LoginPresenter {
   // a stream which will listen each time we have a new error
-  Stream<String> get emailErrorStream;
-  Stream<String> get passwordErrorStream;
-  Stream<String> get mainErrorStream;
+  Stream<UiError> get emailErrorStream;
+  Stream<UiError> get passwordErrorStream;
+  Stream<UiError> get mainErrorStream;
   Stream<String> get navigateToStream;
   Stream<bool> get isFormValidStream;
   Stream<bool> get isLoadingStream;

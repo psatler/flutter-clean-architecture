@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../helpers/errors/errors.dart';
 import '../login_presenter.dart';
 
 class EmailInput extends StatelessWidget {
@@ -9,7 +10,7 @@ class EmailInput extends StatelessWidget {
     final presenter = Provider.of<LoginPresenter>(context);
     final focusNode = FocusScope.of(context);
 
-    return StreamBuilder<String>(
+    return StreamBuilder<UiError>(
       stream: presenter.emailErrorStream,
       builder: (context, snapshot) {
         return TextFormField(
@@ -19,7 +20,7 @@ class EmailInput extends StatelessWidget {
               Icons.email,
               color: Theme.of(context).primaryColorLight,
             ),
-            errorText: snapshot.data?.isEmpty == true ? null : snapshot.data,
+            errorText: snapshot.hasData ? snapshot.data.description : null,
           ),
           onChanged: presenter.validateEmail,
           keyboardType: TextInputType.emailAddress,
