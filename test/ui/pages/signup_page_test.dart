@@ -17,12 +17,14 @@ void main() {
   StreamController<UiError> emailErrorController;
   StreamController<UiError> passwordErrorController;
   StreamController<UiError> passwordConfirmationErrorController;
+  StreamController<bool> isFormValidController;
 
   void initStreams() {
     nameErrorController = StreamController<UiError>();
     emailErrorController = StreamController<UiError>();
     passwordErrorController = StreamController<UiError>();
     passwordConfirmationErrorController = StreamController<UiError>();
+    isFormValidController = StreamController<bool>();
   }
 
   void mockStreams() {
@@ -34,6 +36,8 @@ void main() {
         .thenAnswer((_) => passwordErrorController.stream);
     when(presenter.passwordConfirmationErrorStream)
         .thenAnswer((_) => passwordConfirmationErrorController.stream);
+    when(presenter.isFormValidStream)
+        .thenAnswer((_) => isFormValidController.stream);
   }
 
   void closeStreams() {
@@ -41,6 +45,7 @@ void main() {
     emailErrorController.close();
     passwordErrorController.close();
     passwordConfirmationErrorController.close();
+    isFormValidController.close();
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -232,5 +237,29 @@ void main() {
       reason:
           'when a TextFormField has only one text child, it means it has no errors, since at least one of the children is always the label text',
     );
+  });
+
+  testWidgets('Should enable button if form is valid',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isFormValidController.add(true);
+    // after emitting the event, we need to rerender the UI to reflect the changes
+    await tester.pump();
+
+    final button = tester.widget<RaisedButton>(find.byType(RaisedButton));
+    expect(button.onPressed, isNotNull);
+  });
+
+  testWidgets('Should disable button if form is invalid',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    isFormValidController.add(false);
+    // after emitting the event, we need to rerender the UI to reflect the changes
+    await tester.pump();
+
+    final button = tester.widget<RaisedButton>(find.byType(RaisedButton));
+    expect(button.onPressed, null);
   });
 }
