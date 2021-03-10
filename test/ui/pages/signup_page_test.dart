@@ -159,4 +159,28 @@ void main() {
           'when a TextFormField has only one text child, it means it has no errors, since at least one of the children is always the label text',
     );
   });
+
+  testWidgets('Should present name error', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    nameErrorController.add(UiError.invalidadField);
+    // after emitting the event, we need to rerender the UI to reflect the changes
+    await tester.pump();
+    expect(find.text('Campo inválido.'), findsOneWidget);
+
+    nameErrorController.add(UiError.requiredField);
+    await tester.pump();
+    expect(find.text('Campo obrigatório.'), findsOneWidget);
+
+    nameErrorController.add(null);
+    await tester.pump();
+    // getting the children of Email Text Field
+    expect(
+      find.descendant(
+          of: find.bySemanticsLabel('Nome'), matching: find.byType(Text)),
+      findsOneWidget,
+      reason:
+          'when a TextFormField has only one text child, it means it has no errors, since at least one of the children is always the label text',
+    );
+  });
 }
