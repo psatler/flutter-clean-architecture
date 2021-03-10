@@ -219,8 +219,9 @@ void main() {
     // by dispatching this, we enable the button so it is clickable
     isFormValidController.add(true);
     await tester.pump();
-    await tester.tap(find.byType(RaisedButton));
-    await tester.pump();
+    final button = find.byType(RaisedButton);
+    await tester.ensureVisible(button);
+    await tester.tap(button);
 
     verify(presenter.auth()).called(1); // method was called 1 time
   });
