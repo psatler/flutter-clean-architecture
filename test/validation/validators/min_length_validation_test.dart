@@ -16,7 +16,7 @@ class MinLengthValidation implements FieldValidation {
 
   @override
   ValidationError validate(String value) {
-    return ValidationError.invalidField;
+    return value?.length == size ? null : ValidationError.invalidField;
   }
 }
 
@@ -39,10 +39,17 @@ void main() {
     expect(error, ValidationError.invalidField);
   });
 
-  test('Should return error if value is less than min size', () {
+  test('Should return error if value is smaller than min size', () {
     final lessThanStr = faker.randomGenerator.string(4, min: 1);
     final error = sut.validate(lessThanStr);
 
     expect(error, ValidationError.invalidField);
+  });
+
+  test('Should return null if value is equal to min size', () {
+    final equalTo = faker.randomGenerator.string(5, min: 5);
+    final error = sut.validate(equalTo);
+
+    expect(error, null);
   });
 }
