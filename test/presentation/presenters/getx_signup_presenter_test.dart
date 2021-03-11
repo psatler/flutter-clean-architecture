@@ -384,4 +384,18 @@ void main() {
 
     await sut.signUp();
   });
+
+  test('Should change page after successfully creating an account', () async {
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    sut.navigateToStream.listen(expectAsync1((page) => expect(
+          page,
+          '/surveys',
+        )));
+
+    await sut.signUp();
+  });
 }
