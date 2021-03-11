@@ -16,6 +16,11 @@ class GetxSignUpPresenter extends GetxController {
     @required this.validation,
   });
 
+  String _name;
+  String _email;
+  String _password;
+  String _passwordConfirmation;
+
   // creating observers for the streams using GetX
   var _emailError = Rx<UiError>();
   var _nameError = Rx<UiError>();
@@ -31,21 +36,25 @@ class GetxSignUpPresenter extends GetxController {
   Stream<bool> get isFormValidStream => _isFormValid.stream;
 
   void validateEmail(String email) {
+    _email = email;
     _emailError.value = _validateField(field: 'email', value: email);
     _validateForm();
   }
 
   void validateName(String name) {
+    _name = name;
     _nameError.value = _validateField(field: 'name', value: name);
     _validateForm();
   }
 
   void validatePassword(String password) {
+    _password = password;
     _passwordError.value = _validateField(field: 'password', value: password);
     _validateForm();
   }
 
   void validatePasswordConfirmation(String passwordConfirmation) {
+    _passwordConfirmation = passwordConfirmation;
     _passwordConfirmationError.value = _validateField(
         field: 'passwordConfirmation', value: passwordConfirmation);
     _validateForm();
@@ -53,7 +62,14 @@ class GetxSignUpPresenter extends GetxController {
 
   void _validateForm() {
     // setting a new value to the isFormValid observer of GetX
-    _isFormValid.value = false;
+    _isFormValid.value = _emailError.value == null &&
+        _nameError.value == null &&
+        _passwordError.value == null &&
+        _passwordConfirmationError.value == null &&
+        _name != null &&
+        _email != null &&
+        _password != null &&
+        _passwordConfirmation != null;
   }
 
   UiError _validateField({String field, String value}) {
