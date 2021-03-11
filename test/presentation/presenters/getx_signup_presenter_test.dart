@@ -13,14 +13,18 @@ import 'package:flutter_clean_arch/presentation/protocols/validation.dart';
 
 class ValidationSpy extends Mock implements Validation {}
 
+class AddAccountSpy extends Mock implements AddAccount {}
+
 void main() {
   GetxSignUpPresenter sut; // <----
   ValidationSpy validation;
+  AddAccountSpy addAccount;
 
   String email;
   String name;
   String password;
   String passwordConfirmation;
+  String token;
 
   PostExpectation mockValidationCall(String field) => when(
         validation.validate(
@@ -34,18 +38,28 @@ void main() {
     mockValidationCall(field).thenReturn(returnValue);
   }
 
+  PostExpectation mockAddAccountCall() => when(addAccount.add(any));
+
+  void mockAddAccount() {
+    mockAddAccountCall().thenAnswer((_) async => AccountEntity(token));
+  }
+
   setUp(() {
     validation = ValidationSpy();
+    addAccount = AddAccountSpy();
     sut = GetxSignUpPresenter(
       validation: validation,
+      addAccount: addAccount,
     );
     email = faker.internet.email();
     name = faker.person.name();
     password = faker.internet.password();
     passwordConfirmation = faker.internet.password();
+    token = faker.guid.guid();
 
     // mocking successful validation
     mockValidation();
+    mockAddAccount();
   });
 
   test('Should call validation with correct email', () {
@@ -264,5 +278,22 @@ void main() {
     await Future.delayed(Duration.zero); // hack to make emitsInOrder work
     sut.validatePasswordConfirmation(passwordConfirmation);
     await Future.delayed(Duration.zero); // hack to make emitsInOrder work
+  });
+
+  test('Should call AddAccount with correct value', () async {
+    // fill out all the fields
+    sut.validateName(name);
+    sut.validateEmail(email);
+    sut.validatePassword(password);
+    sut.validatePasswordConfirmation(passwordConfirmation);
+
+    await sut.signUp();
+
+    verify(addAccount.add(AddAccountParams(
+      name: name,
+      email: email,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+    ))).called(1);
   });
 }

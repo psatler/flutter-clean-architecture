@@ -11,9 +11,11 @@ import '../protocols/protocols.dart';
 
 class GetxSignUpPresenter extends GetxController {
   final Validation validation;
+  final AddAccount addAccount;
 
   GetxSignUpPresenter({
     @required this.validation,
+    @required this.addAccount,
   });
 
   String _name;
@@ -85,5 +87,14 @@ class GetxSignUpPresenter extends GetxController {
       default:
         return null;
     }
+  }
+
+  Future<void> signUp() async {
+    await addAccount.add(AddAccountParams(
+      name: _name,
+      email: _email,
+      password: _password,
+      passwordConfirmation: _passwordConfirmation,
+    ));
   }
 }
