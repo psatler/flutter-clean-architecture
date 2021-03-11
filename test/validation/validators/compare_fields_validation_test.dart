@@ -16,4 +16,10 @@ void main() {
 
     expect(error, ValidationError.invalidField);
   });
+
+  test('Should return null if values are equal', () {
+    final error = sut.validate('any_value');
+
+    expect(error, null);
+  });
 }
