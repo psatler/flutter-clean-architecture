@@ -108,6 +108,10 @@ class GetxSignUpPresenter extends GetxController {
       await saveCurrentAccount.save(accountEntity);
     } on DomainError catch (error) {
       switch (error) {
+        case DomainError.emailInUse:
+          _mainError.value = UiError.emailInUse;
+          break;
+
         default:
           _mainError.value = UiError.unexpected;
           break;
