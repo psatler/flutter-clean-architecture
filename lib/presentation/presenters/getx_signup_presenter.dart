@@ -30,14 +30,18 @@ class GetxSignUpPresenter extends GetxController {
   var _nameError = Rx<UiError>();
   var _passwordError = Rx<UiError>();
   var _passwordConfirmationError = Rx<UiError>();
+  var _mainError = Rx<UiError>();
   var _isFormValid = false.obs;
+  var _isLoading = false.obs;
 
   Stream<UiError> get emailErrorStream => _emailError.stream;
   Stream<UiError> get nameErrorStream => _nameError.stream;
   Stream<UiError> get passwordErrorStream => _passwordError.stream;
   Stream<UiError> get passwordConfirmationErrorStream =>
       _passwordConfirmationError.stream;
+  Stream<UiError> get mainErrorStream => _mainError.stream;
   Stream<bool> get isFormValidStream => _isFormValid.stream;
+  Stream<bool> get isLoadingStream => _isLoading.stream;
 
   void validateEmail(String email) {
     _email = email;
@@ -92,13 +96,24 @@ class GetxSignUpPresenter extends GetxController {
   }
 
   Future<void> signUp() async {
-    AccountEntity accountEntity = await addAccount.add(AddAccountParams(
-      name: _name,
-      email: _email,
-      password: _password,
-      passwordConfirmation: _passwordConfirmation,
-    ));
+    try {
+      _isLoading.value = true;
+      AccountEntity accountEntity = await addAccount.add(AddAccountParams(
+        name: _name,
+        email: _email,
+        password: _password,
+        passwordConfirmation: _passwordConfirmation,
+      ));
 
-    await saveCurrentAccount.save(accountEntity);
+      await saveCurrentAccount.save(accountEntity);
+    } on DomainError catch (error) {
+      switch (error) {
+        default:
+          _mainError.value = UiError.unexpected;
+          break;
+      }
+    } finally {
+      _isLoading.value = false;
+    }
   }
 }
