@@ -18,13 +18,20 @@ class GetxSignUpPresenter extends GetxController {
 
   // creating observers for the streams using GetX
   var _emailError = Rx<UiError>();
+  var _nameError = Rx<UiError>();
   var _isFormValid = false.obs;
 
   Stream<UiError> get emailErrorStream => _emailError.stream;
+  Stream<UiError> get nameErrorStream => _nameError.stream;
   Stream<bool> get isFormValidStream => _isFormValid.stream;
 
   void validateEmail(String email) {
     _emailError.value = _validateField(field: 'email', value: email);
+    _validateForm();
+  }
+
+  void validateName(String name) {
+    _nameError.value = _validateField(field: 'name', value: name);
     _validateForm();
   }
 
