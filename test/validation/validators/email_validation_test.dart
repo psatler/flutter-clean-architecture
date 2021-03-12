@@ -10,6 +10,13 @@ void main() {
   setUp(() {
     sut = EmailValidation('any_field');
   });
+  test('Should return null on invalid cases (if the email field is missing)',
+      () {
+    final formData = {};
+
+    expect(sut.validate(formData), null);
+  });
+
   test('Should return null if email is empty', () {
     final formData = {'any_field': ''};
 
