@@ -11,21 +11,36 @@ void main() {
     sut = EmailValidation('any_field');
   });
   test('Should return null if email is empty', () {
-    expect(sut.validate(''), null);
+    final formData = {'any_field': ''};
+
+    expect(sut.validate(formData), null);
   });
 
   test('Should return null if email is null', () {
-    expect(sut.validate(null), null);
+    final formData = {'any_field': null};
+
+    expect(sut.validate(formData), null);
   });
 
   test('Should return null if email is valid', () {
-    expect(sut.validate('email@email.com'), null);
+    final formData = {'any_field': 'email@email.com'};
+
+    expect(sut.validate(formData), null);
   });
 
   test('Should return error if email is invalid', () {
-    expect(sut.validate('email.com'), ValidationError.invalidField);
-    expect(sut.validate('email@.com'), ValidationError.invalidField);
-    expect(sut.validate('@.com'), ValidationError.invalidField);
+    expect(
+      sut.validate({'any_field': 'email.com'}),
+      ValidationError.invalidField,
+    );
+    expect(
+      sut.validate({'any_field': 'email@.com'}),
+      ValidationError.invalidField,
+    );
+    expect(
+      sut.validate({'any_field': '@.com'}),
+      ValidationError.invalidField,
+    );
     // expect(sut.validate('email@a.com'), 'Campo inválido');
   });
 }
