@@ -102,6 +102,7 @@ create a `dart.json` file. The snippet create use `darttest` as a shortcut.
 }
 ```
 
+
 ## Aknowledgements
 
 - [This article](https://medium.com/flutter-community/flutter-design-patterns-0-introduction-5e88cfff6792) shows several design patterns applied to Flutter.

@@ -13,7 +13,9 @@ void main() {
       [
         RequiredFieldValidation('email'),
         EmailValidation('email'),
+        // validations for password are below
         RequiredFieldValidation('password'),
+        MinLengthValidation(field: 'password', size: 3),
       ],
     );
   });
