@@ -84,6 +84,7 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
     _isLoading.value = true;
 
     try {
+      _mainError.value = null;
       AccountEntity accountEntity =
           await authentication.auth(AuthenticationParams(
         email: _email,

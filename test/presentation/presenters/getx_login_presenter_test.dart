@@ -242,11 +242,8 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
+    expectLater(sut.mainErrorStream, emitsInOrder([null, UiError.unexpected]));
     expectLater(sut.isLoadingStream, emitsInOrder([true, false])); // <----
-    sut.mainErrorStream.listen(expectAsync1((error) => expect(
-          error,
-          UiError.unexpected,
-        )));
 
     await sut.auth();
   });
@@ -258,6 +255,7 @@ void main() {
     sut.validatePassword(password);
 
     expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+    expectLater(sut.mainErrorStream, emits(null));
 
     await sut.auth();
   });
@@ -279,11 +277,9 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
+    expectLater(
+        sut.mainErrorStream, emitsInOrder([null, UiError.invalidCredentials]));
     expectLater(sut.isLoadingStream, emitsInOrder([true, false])); // <----
-    sut.mainErrorStream.listen(expectAsync1((error) => expect(
-          error,
-          UiError.invalidCredentials,
-        )));
 
     await sut.auth();
   });
@@ -293,11 +289,8 @@ void main() {
     sut.validateEmail(email);
     sut.validatePassword(password);
 
+    expectLater(sut.mainErrorStream, emitsInOrder([null, UiError.unexpected]));
     expectLater(sut.isLoadingStream, emitsInOrder([true, false])); // <----
-    sut.mainErrorStream.listen(expectAsync1((error) => expect(
-          error,
-          UiError.unexpected,
-        )));
 
     await sut.auth();
   });
