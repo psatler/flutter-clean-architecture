@@ -158,4 +158,36 @@ void main() {
       expect(future, throwsA(HttpError.serverError));
     });
   });
+
+  group('Get requests', () {
+    PostExpectation mockRequest() =>
+        when(client.get(any, headers: anyNamed('headers')));
+
+    // success cases don't need a body as argument as we already set one as default
+    void mockResponse(int statusCode,
+        {String body = '{"any_key": "any_value"}'}) {
+      mockRequest().thenAnswer((_) async => Response(body, statusCode));
+    }
+
+    // group setup
+    setUp(() {
+      mockResponse(200);
+    });
+
+    test('Should call get with correct values', () async {
+      await sut.request(
+        url: url,
+        method: 'get',
+      );
+
+      // verifying that we call client.post internally (inside the HttpAdater class)
+      verify(client.get(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+        },
+      ));
+    });
+  });
 }
