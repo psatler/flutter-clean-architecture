@@ -9,7 +9,7 @@ import 'package:flutter_clean_arch/data/http/http.dart';
 import 'package:flutter_clean_arch/data/usecases/usecases.dart';
 
 // mocks and spies
-class HttpClientSpy extends Mock implements HttpClient {}
+class HttpClientSpy extends Mock implements HttpClient<Map> {}
 
 void main() {
   // sut = System Under Tests
