@@ -18,6 +18,12 @@ class RemoteSurveyModal {
   });
 
   factory RemoteSurveyModal.fromJson(Map json) {
+    if (!json.keys
+        .toSet()
+        .containsAll(['id', 'question', 'date', 'didAnswer'])) {
+      throw HttpError.invalidData;
+    }
+
     return RemoteSurveyModal(
       id: json['id'],
       question: json['question'],
