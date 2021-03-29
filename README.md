@@ -89,7 +89,7 @@ create a `dart.json` file. The snippet create use `darttest` as a shortcut.
 
 ```json
 {
-	"Flutter unit tests": {
+  "Dart unit tests": {
 		"prefix": "darttest",
 		"body": [
 			"import 'package:test/test.dart';",
@@ -98,8 +98,21 @@ create a `dart.json` file. The snippet create use `darttest` as a shortcut.
 			" test('', () {});",
 			"}"
 		],
-		"description": "Initial boilerplate for test code"
-	}
+		"description": "Initial boilerplate for Dart test code"
+	},
+	"Flutter Widget tests": {
+		"prefix": "fluttertest",
+		"body": [
+			"import 'package:flutter_test/flutter_test.dart';",
+			"",
+			"void main() {",
+			" testWidgets('', (WidgetTester tester) async {",
+			"",
+			" });",
+			"}"
+		],
+		"description": "Initial boilerplate for Flutter Wiget test"
+	},
 }
 ```
 
