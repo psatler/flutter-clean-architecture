@@ -18,4 +18,5 @@ class PtBr implements Translations {
   String get wait => 'Aguarde...';
 
   String get surveys => 'Enquetes';
+  String get reload => 'Recarregar';
 }

@@ -17,4 +17,5 @@ class EnUs implements Translations {
   String get wait => 'Wait...';
 
   String get surveys => 'Surveys';
+  String get reload => 'Reload';
 }
