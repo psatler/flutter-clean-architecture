@@ -40,6 +40,7 @@ The swagger documentation for the backend the app communicate with can be found 
   - Pay attention that I'm using version `3.4.2` exactly.
 - [Flutter Secure Storage](https://pub.dev/packages/flutter_secure_storage): provides API to store data in secure storage. Keychain is used in iOS, KeyStore based solution is used in Android.
   - We need to modify the minSdkVersion to 18 in the `build.gradle` file in the Android project
+- [Carousel Slider](https://pub.dev/packages/carousel_slider): A carousel slider widget.
 
 > #### Dev Dependencies
 - [Test](https://pub.dev/packages/test): provides a standard way of writing and running tests in Dart.

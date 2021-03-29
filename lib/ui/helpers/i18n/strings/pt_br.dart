@@ -16,4 +16,6 @@ class PtBr implements Translations {
   String get login => 'Login';
   String get name => 'Nome';
   String get wait => 'Aguarde...';
+
+  String get surveys => 'Enquetes';
 }
