@@ -51,6 +51,21 @@ void main() {
     await tester.pumpWidget(surveysPage);
   }
 
+  List<SurveyViewModel> makeSurveys() => [
+        SurveyViewModel(
+          id: '1',
+          question: 'Question 1',
+          date: 'Any date',
+          didAnswer: true,
+        ),
+        SurveyViewModel(
+          id: '2',
+          question: 'Question 2',
+          date: 'Any date',
+          didAnswer: false,
+        ),
+      ];
+
   tearDown(() {
     closeStreams();
   });
@@ -92,5 +107,22 @@ void main() {
         findsOneWidget);
     expect(find.text('Recarregar'), findsOneWidget); // reload button
     expect(find.text('Question 1'), findsNothing); // a survey's question
+  });
+
+  testWidgets('Should present list of questions if loadSurveysStream succeeds',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    loadSurveysController.add(makeSurveys());
+    await tester.pump();
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsNothing);
+    expect(find.text('Recarregar'), findsNothing); // reload button
+    expect(find.text('Question 1'), findsWidgets); // a survey's question
+    expect(find.text('Question 2'), findsWidgets);
+
+    // to find only one widget of the last type, we can disable infinite scroll in the CarouselSlider
+    // expect(find.text('Question 2'), findsOneWidget);
   });
 }

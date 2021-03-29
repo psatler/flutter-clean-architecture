@@ -4,7 +4,7 @@ class SurveyViewModel {
   final String id;
   final String question;
   final String date;
-  final String didAnswer;
+  final bool didAnswer;
 
   SurveyViewModel({
     @required this.id,

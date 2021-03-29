@@ -35,37 +35,41 @@ class SurveysPage extends StatelessWidget {
           });
 
           return StreamBuilder<List<SurveyViewModel>>(
-              stream: presenter.loadSurveysStream,
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Column(
-                    children: [
-                      Text(snapshot.error),
-                      RaisedButton(
-                        onPressed: null,
-                        child: Text(
-                          R.strings.reload,
-                        ),
-                      )
-                    ],
-                  );
-                }
+            stream: presenter.loadSurveysStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Column(
+                  children: [
+                    Text(snapshot.error),
+                    RaisedButton(
+                      onPressed: null,
+                      child: Text(
+                        R.strings.reload,
+                      ),
+                    )
+                  ],
+                );
+              }
 
+              if (snapshot.hasData) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: CarouselSlider(
                     options: CarouselOptions(
                       enlargeCenterPage: true,
                       aspectRatio: 1,
+                      // enableInfiniteScroll: false,
                     ),
-                    items: [
-                      SurveyItem(),
-                      SurveyItem(),
-                      SurveyItem(),
-                    ],
+                    items: snapshot.data
+                        .map((viewModel) => SurveyItem(viewModel))
+                        .toList(),
                   ),
                 );
-              });
+              }
+
+              return Container(width: 0.0, height: 0.0);
+            },
+          );
         },
       ),
     );
