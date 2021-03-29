@@ -55,13 +55,13 @@ void main() {
         SurveyViewModel(
           id: '1',
           question: 'Question 1',
-          date: 'Any date',
+          date: 'Date 1',
           didAnswer: true,
         ),
         SurveyViewModel(
           id: '2',
           question: 'Question 2',
-          date: 'Any date',
+          date: 'Date 2',
           didAnswer: false,
         ),
       ];
@@ -121,6 +121,8 @@ void main() {
     expect(find.text('Recarregar'), findsNothing); // reload button
     expect(find.text('Question 1'), findsWidgets); // a survey's question
     expect(find.text('Question 2'), findsWidgets);
+    expect(find.text('Date 1'), findsWidgets);
+    expect(find.text('Date 2'), findsWidgets);
 
     // to find only one widget of the last type, we can disable infinite scroll in the CarouselSlider
     // expect(find.text('Question 2'), findsOneWidget);
