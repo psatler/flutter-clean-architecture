@@ -127,4 +127,17 @@ void main() {
     // to find only one widget of the last type, we can disable infinite scroll in the CarouselSlider
     // expect(find.text('Question 2'), findsOneWidget);
   });
+
+  testWidgets('Should call LoadSurveys on reload button click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    loadSurveysController.addError(UiError.unexpected.description);
+    await tester.pump();
+
+    await tester.tap(find.text('Recarregar'));
+
+    verify(presenter.loadData()).called(
+        2); // called when first loading the page and also after pressing the reload button
+  });
 }
