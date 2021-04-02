@@ -11,7 +11,7 @@ class GetxSplashPresenter implements SplashPresenter {
     @required this.loadCurrentAccount,
   });
 
-  var _navigateTo = RxString();
+  var _navigateTo = RxString(null);
 
   @override
   Stream<String> get navigateToStream => _navigateTo.stream;

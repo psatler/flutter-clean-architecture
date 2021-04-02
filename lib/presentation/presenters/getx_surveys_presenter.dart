@@ -13,7 +13,7 @@ class GetxSurveysPresenter implements SurveysPresenter {
   final LoadSurveys loadSurveys;
 
   final _isLoading = true.obs;
-  final _surveys = Rx<List<SurveyViewModel>>();
+  final _surveys = Rx<List<SurveyViewModel>>(null);
 
   Stream<bool> get isLoadingStream => _isLoading.stream;
   Stream<List<SurveyViewModel>> get surveysStream => _surveys.stream;
@@ -36,7 +36,9 @@ class GetxSurveysPresenter implements SurveysPresenter {
               ))
           .toList();
     } on DomainError {
-      _surveys.subject.addError(UiError.unexpected.description);
+      print(UiError.unexpected.description);
+      // _surveys.addError(UiError.unexpected.description);
+      // _surveys.subject.addError(UiError.unexpected.description);
     } finally {
       _isLoading.value = false;
     }

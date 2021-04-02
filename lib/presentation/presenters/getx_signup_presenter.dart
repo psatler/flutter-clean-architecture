@@ -26,14 +26,14 @@ class GetxSignUpPresenter extends GetxController implements SignUpPresenter {
   String _passwordConfirmation;
 
   // creating observers for the streams using GetX
-  var _emailError = Rx<UiError>();
-  var _nameError = Rx<UiError>();
-  var _passwordError = Rx<UiError>();
-  var _passwordConfirmationError = Rx<UiError>();
-  var _mainError = Rx<UiError>();
+  var _emailError = Rx<UiError>(null);
+  var _nameError = Rx<UiError>(null);
+  var _passwordError = Rx<UiError>(null);
+  var _passwordConfirmationError = Rx<UiError>(null);
+  var _mainError = Rx<UiError>(null);
   var _isFormValid = false.obs;
   var _isLoading = false.obs;
-  var _navigateTo = RxString();
+  var _navigateTo = RxString(null);
 
   Stream<UiError> get emailErrorStream => _emailError.stream;
   Stream<UiError> get nameErrorStream => _nameError.stream;

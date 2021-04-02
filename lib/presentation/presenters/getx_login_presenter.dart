@@ -24,10 +24,10 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
   String _password;
 
   // creating observers for the streams using GetX
-  var _emailError = Rx<UiError>();
-  var _passwordError = Rx<UiError>();
-  var _mainError = Rx<UiError>();
-  var _navigateTo = RxString();
+  var _emailError = Rx<UiError>(null);
+  var _passwordError = Rx<UiError>(null);
+  var _mainError = Rx<UiError>(null);
+  var _navigateTo = RxString(null);
   // shortcut to create an RxBool with initial value as false
   var _isFormValid = false.obs;
   var _isLoading = false.obs;
