@@ -8,7 +8,7 @@ import 'package:flutter_clean_arch/data/usecases/usecases.dart';
 import 'package:flutter_clean_arch/domain/entities/entities.dart';
 import 'package:flutter_clean_arch/domain/helpers/helpers.dart';
 
-class HttpClientSpy extends Mock implements HttpClient<List<Map>> {}
+class HttpClientSpy extends Mock implements HttpClient {}
 
 void main() {
   RemoteLoadSurveys sut;
