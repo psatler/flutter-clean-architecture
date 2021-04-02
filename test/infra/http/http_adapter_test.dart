@@ -60,11 +60,31 @@ void main() {
       );
 
       // verifying that we call client.post internally (inside the HttpAdater class)
+      verify(
+        client.post(
+          Uri.parse(url),
+          headers: {
+            'content-type': 'application/json',
+            'accept': 'application/json',
+          },
+          body: jsonEncode(body),
+        ),
+      );
+
+      await sut.request(
+        url: url,
+        method: 'post',
+        body: body,
+        headers: {'any_header': 'any_value'},
+      );
+
+      // verifying that we call client.post internally (inside the HttpAdater class)
       verify(client.post(
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
           'accept': 'application/json',
+          'any_header': 'any_value'
         },
         body: jsonEncode(body),
       ));
@@ -190,6 +210,22 @@ void main() {
         headers: {
           'content-type': 'application/json',
           'accept': 'application/json',
+        },
+      ));
+
+      await sut.request(
+        url: url,
+        method: 'get',
+        headers: {'any_header': 'any_value'},
+      );
+
+      // verifying that we call client.post internally (inside the HttpAdater class)
+      verify(client.get(
+        Uri.parse(url),
+        headers: {
+          'content-type': 'application/json',
+          'accept': 'application/json',
+          'any_header': 'any_value'
         },
       ));
     });
