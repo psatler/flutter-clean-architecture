@@ -37,8 +37,9 @@ class GetxSurveysPresenter implements SurveysPresenter {
           .toList();
     } on DomainError {
       print(UiError.unexpected.description);
+
       // _surveys.addError(UiError.unexpected.description);
-      _surveys.subject.addError(UiError.unexpected.description);
+      // _surveys.subject.addError(UiError.unexpected.description);
     } finally {
       _isLoading.value = false;
     }
