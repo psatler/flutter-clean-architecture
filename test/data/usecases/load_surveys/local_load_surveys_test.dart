@@ -7,12 +7,12 @@ import 'package:flutter_clean_arch/data/usecases/usecases.dart';
 import 'package:flutter_clean_arch/domain/entities/entities.dart';
 import 'package:flutter_clean_arch/domain/helpers/helpers.dart';
 
-class FetchCacheStorageSpy extends Mock implements FetchCacheStorage {}
+class CacheStorageSpy extends Mock implements CacheStorage {}
 
 void main() {
   group('Load', () {
     LocalLoadSurveys sut;
-    FetchCacheStorageSpy fetchCacheStorage;
+    CacheStorageSpy fetchCacheStorage;
     List<Map> data;
 
     List<Map> mockValidData() => [
@@ -40,8 +40,8 @@ void main() {
     void mockFetchError() => mockFetchCall().thenThrow(Exception());
 
     setUp(() {
-      fetchCacheStorage = FetchCacheStorageSpy();
-      sut = LocalLoadSurveys(fetchCacheStorage: fetchCacheStorage);
+      fetchCacheStorage = CacheStorageSpy();
+      sut = LocalLoadSurveys(cacheStorage: fetchCacheStorage);
 
       mockFetch(mockValidData());
     });
