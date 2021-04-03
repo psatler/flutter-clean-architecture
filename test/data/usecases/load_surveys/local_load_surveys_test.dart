@@ -1,4 +1,5 @@
 import 'package:faker/faker.dart';
+import 'package:flutter_clean_arch/data/cache/cache.dart';
 import 'package:flutter_clean_arch/data/models/models.dart';
 import 'package:flutter_clean_arch/domain/entities/entities.dart';
 import 'package:flutter_clean_arch/domain/helpers/helpers.dart';
@@ -32,10 +33,6 @@ class LocalLoadSurveys {
 }
 
 class FetchCacheStorageSpy extends Mock implements FetchCacheStorage {}
-
-abstract class FetchCacheStorage {
-  Future<dynamic> fetch(String key);
-}
 
 void main() {
   LocalLoadSurveys sut;
