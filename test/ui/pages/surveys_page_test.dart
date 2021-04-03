@@ -12,29 +12,12 @@ class SurveysPresenterSpy extends Mock implements SurveysPresenter {}
 
 void main() {
   SurveysPresenterSpy presenter;
-  StreamController<bool> isLoadingController;
   StreamController<List<SurveyViewModel>> surveysController;
-
-  void initStreams() {
-    isLoadingController = StreamController<bool>();
-    surveysController = StreamController<List<SurveyViewModel>>();
-  }
-
-  void mockStreams() {
-    when(presenter.isLoadingStream)
-        .thenAnswer((_) => isLoadingController.stream);
-    when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
-  }
-
-  void closeStreams() {
-    isLoadingController.close();
-    surveysController.close();
-  }
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = SurveysPresenterSpy();
-    initStreams();
-    mockStreams();
+    surveysController = StreamController<List<SurveyViewModel>>();
+    when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
 
     final surveysPage = GetMaterialApp(
       initialRoute: '/surveys',
@@ -66,7 +49,7 @@ void main() {
       ];
 
   tearDown(() {
-    closeStreams();
+    surveysController.close();
   });
 
   testWidgets('Should call LoadSurveys on page load',
@@ -75,29 +58,30 @@ void main() {
     verify(presenter.loadData()).called(1);
   });
 
-  testWidgets('Should handle loading indicator', (WidgetTester tester) async {
-    await loadPage(tester);
+  // testWidgets('Should handle loading indicator', (WidgetTester tester) async {
+  //   await loadPage(tester);
 
-    isLoadingController.add(true);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  //   isLoadingController.add(true);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    isLoadingController.add(false);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+  //   isLoadingController.add(false);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsNothing);
 
-    isLoadingController.add(true);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  //   isLoadingController.add(true);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    isLoadingController.add(null);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsNothing);
-  });
+  //   isLoadingController.add(null);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsNothing);
+  // });
 
   testWidgets('Should present error if surveysStream fails',
       (WidgetTester tester) async {
     await loadPage(tester);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
     surveysController.addError(UiError.unexpected.description);
     await tester.pump();
@@ -106,11 +90,14 @@ void main() {
         findsOneWidget);
     expect(find.text('Recarregar'), findsOneWidget); // reload button
     expect(find.text('Question 1'), findsNothing); // a survey's question
+
+    expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
   testWidgets('Should present list of questions if surveysStream succeeds',
       (WidgetTester tester) async {
     await loadPage(tester);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
     surveysController.add(makeSurveys());
     await tester.pump();
@@ -122,6 +109,8 @@ void main() {
     expect(find.text('Question 2'), findsWidgets);
     expect(find.text('Date 1'), findsWidgets);
     expect(find.text('Date 2'), findsWidgets);
+
+    expect(find.byType(CircularProgressIndicator), findsNothing);
 
     // to find only one widget of the last type, we can disable infinite scroll in the CarouselSlider
     // expect(find.text('Question 2'), findsOneWidget);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../../components/components.dart';
 import '../../helpers/helpers.dart';
 
 import 'components/components.dart';
@@ -23,64 +22,54 @@ class SurveysPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(R.strings.surveys),
       ),
-      body: Builder(
-        builder: (context) {
-          presenter.isLoadingStream.listen((isLoading) {
-            // a stream can be null so we explicitly compare to true
-            if (isLoading == true) {
-              showLoading(context);
-            } else {
-              hideLoading(context);
-            }
-          });
+      body: StreamBuilder<List<SurveyViewModel>>(
+        stream: presenter.surveysStream,
+        builder: (context, snapshot) {
+          debugPrint('snapshot $snapshot');
+          debugPrint('snapshot.hasError ${snapshot.hasError}');
 
-          return StreamBuilder<List<SurveyViewModel>>(
-            stream: presenter.surveysStream,
-            builder: (context, snapshot) {
-              debugPrint('snapshot $snapshot');
-              debugPrint('snapshot.hasError ${snapshot.hasError}');
-
-              if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        snapshot.error,
-                        style: TextStyle(fontSize: 16),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 10),
-                      RaisedButton(
-                        onPressed: presenter.loadData,
-                        child: Text(
-                          R.strings.reload,
-                        ),
-                      )
-                    ],
+          if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    snapshot.error,
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
-                );
-              }
-
-              if (snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      enlargeCenterPage: true,
-                      aspectRatio: 1,
-                      // enableInfiniteScroll: false,
+                  SizedBox(height: 10),
+                  RaisedButton(
+                    onPressed: presenter.loadData,
+                    child: Text(
+                      R.strings.reload,
                     ),
-                    items: snapshot.data
-                        .map((viewModel) => SurveyItem(viewModel))
-                        .toList(),
-                  ),
-                );
-              }
+                  )
+                ],
+              ),
+            );
+          }
 
-              return Container(width: 0.0, height: 0.0);
-            },
+          if (snapshot.hasData) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  enlargeCenterPage: true,
+                  aspectRatio: 1,
+                  // enableInfiniteScroll: false,
+                ),
+                items: snapshot.data
+                    .map((viewModel) => SurveyItem(viewModel))
+                    .toList(),
+              ),
+            );
+          }
+
+          // return Container(width: 0.0, height: 0.0);
+          return Center(
+            child: CircularProgressIndicator(),
           );
         },
       ),

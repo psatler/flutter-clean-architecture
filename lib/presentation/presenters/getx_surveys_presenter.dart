@@ -12,10 +12,8 @@ import '../../ui/pages/surveys/surveys.dart';
 class GetxSurveysPresenter implements SurveysPresenter {
   final LoadSurveys loadSurveys;
 
-  final _isLoading = true.obs;
   final _surveys = Rx<List<SurveyViewModel>>(null);
 
-  Stream<bool> get isLoadingStream => _isLoading.stream;
   Stream<List<SurveyViewModel>> get surveysStream => _surveys.stream;
 
   GetxSurveysPresenter({
@@ -24,7 +22,6 @@ class GetxSurveysPresenter implements SurveysPresenter {
 
   Future<void> loadData() async {
     try {
-      _isLoading.value = true; // dispatching an event to start loading
       List<SurveyEntity> surveys = await loadSurveys.load();
 
       _surveys.value = surveys
@@ -37,11 +34,8 @@ class GetxSurveysPresenter implements SurveysPresenter {
           .toList();
     } on DomainError {
       print(UiError.unexpected.description);
-
       // _surveys.addError(UiError.unexpected.description);
-      // _surveys.subject.addError(UiError.unexpected.description);
-    } finally {
-      _isLoading.value = false;
+      _surveys.subject.addError(UiError.unexpected.description);
     }
   }
 }

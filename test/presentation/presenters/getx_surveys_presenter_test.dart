@@ -52,7 +52,6 @@ void main() {
   });
 
   test('Should emit correct events/streams on success', () async {
-    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
     sut.surveysStream
         .listen(expectAsync1((surveysExpect) => expect(surveysExpect, [
               SurveyViewModel(
@@ -73,7 +72,6 @@ void main() {
   test('Should emit correct events/streams on failure', () async {
     mockLoadSurveysError();
 
-    expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
     sut.surveysStream.listen(null,
         onError: expectAsync1(
             (error) => expect(error, UiError.unexpected.description)));
