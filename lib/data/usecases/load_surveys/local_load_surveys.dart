@@ -22,7 +22,7 @@ class LocalLoadSurveys implements LoadSurveys {
         throw Exception();
       }
 
-      return _mapSurveys(data);
+      return _mapSurveysToEntity(data);
     } catch (error) {
       throw DomainError.unexpected;
     }
@@ -31,13 +31,21 @@ class LocalLoadSurveys implements LoadSurveys {
   Future<void> validate() async {
     try {
       final data = await cacheStorage.fetch('surveys');
-      _mapSurveys(data);
+      _mapSurveysToEntity(data);
     } catch (error) {
       await cacheStorage.delete('surveys');
     }
   }
 
-  List<SurveyEntity> _mapSurveys(List<Map> list) => list
+  Future<void> save(List<SurveyEntity> surveys) async {
+    await cacheStorage.save(key: 'surveys', value: _mapSurveysToJson(surveys));
+  }
+
+  List<SurveyEntity> _mapSurveysToEntity(List<Map> list) => list
       .map<SurveyEntity>((json) => LocalSurveyModel.fromJson(json).toEntity())
+      .toList();
+
+  List<Map> _mapSurveysToJson(List<SurveyEntity> list) => list
+      .map((entity) => LocalSurveyModel.fromEntity(entity).toJson())
       .toList();
 }
