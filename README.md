@@ -40,6 +40,7 @@ The swagger documentation for the backend the app communicate with can be found 
   - Pay attention that I'm using version `3.4.2` exactly.
 - [Flutter Secure Storage](https://pub.dev/packages/flutter_secure_storage): provides API to store data in secure storage. Keychain is used in iOS, KeyStore based solution is used in Android.
   - We need to modify the minSdkVersion to 18 in the `build.gradle` file in the Android project
+- [Local Storage](https://pub.dev/packages/localstorage): Simple json file-based storage for flutter
 - [Carousel Slider](https://pub.dev/packages/carousel_slider): A carousel slider widget.
 - [Intl](https://pub.dev/packages/intl): Contains code to deal with internationalized/localized messages, date and number formatting and parsing, bi-directional text, and other internationalization issues.
   - Used in this project for Date conversions.
