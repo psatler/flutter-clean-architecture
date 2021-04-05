@@ -6,7 +6,7 @@
 3. ✅ Sistema retorna esses dados
 
 > ## Exceção - Acesso negado
-1. Sistema repassa a exceção de acesso negado
+1. ✅ Sistema repassa a exceção de acesso negado (403) para a camada de UI e esta trata o erro (deslogando o usuário)
 
 > ## Exceção - Qualquer outro erro
 1. Sistema executa o método de validar dados do cache
