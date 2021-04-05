@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 import 'package:flutter_clean_arch/presentation/protocols/protocols.dart';
 
-import 'package:flutter_clean_arch/validation/validators/validators.dart';
+import 'package:flutter_clean_arch/main/composites/composites.dart';
 import 'package:flutter_clean_arch/validation/protocols/protocols.dart';
 
 class FieldValidationSpy extends Mock implements FieldValidation {}
