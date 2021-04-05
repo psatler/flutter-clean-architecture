@@ -51,4 +51,12 @@ void main() {
       expect(future, throwsA(TypeMatcher<Exception>()));
     });
   });
+
+  group('Delete', () {
+    test('Should delete localStorage cache with correct key', () async {
+      await sut.delete(key);
+
+      verify(localStorage.deleteItem(key)).called(1);
+    });
+  });
 }
