@@ -31,6 +31,7 @@ void main() {
     test('Should call localStorage with correct values', () async {
       await sut.save(key: key, value: value);
 
+      verify(localStorage.ready).called(1);
       verify(localStorage.deleteItem(key)).called(1);
       verify(localStorage.setItem(key, value)).called(1);
     });
@@ -56,6 +57,7 @@ void main() {
     test('Should delete localStorage cache with correct key', () async {
       await sut.delete(key);
 
+      verify(localStorage.ready).called(1);
       verify(localStorage.deleteItem(key)).called(1);
     });
 
@@ -73,7 +75,10 @@ void main() {
 
     PostExpectation mockFetchCall() => when(localStorage.getItem(any));
 
-    void mockFetch() => mockFetchCall().thenAnswer((_) async => result);
+    void mockFetch() {
+      result = faker.randomGenerator.string(50);
+      mockFetchCall().thenAnswer((_) async => result);
+    }
 
     void mockFetchError() => mockFetchCall().thenThrow(Exception());
 
@@ -83,6 +88,7 @@ void main() {
     test('Should call localStorage with correct value', () async {
       await sut.fetch(key);
 
+      verify(localStorage.ready).called(1);
       verify(localStorage.getItem(key)).called(1);
     });
 
