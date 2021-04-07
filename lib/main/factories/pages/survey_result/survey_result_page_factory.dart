@@ -3,4 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../ui/pages/pages.dart';
 import '../../factories.dart';
 
-Widget makeSurveyResultPage() => SurveyResultPage();
+Widget makeSurveyResultPage() => SurveyResultPage(
+      presenter: null,
+    );
