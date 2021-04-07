@@ -60,7 +60,7 @@ void main() {
     closeStream();
   });
 
-  testWidgets('Should call LoadSurveysResult on page load',
+  testWidgets('Should call LoadSurveyResult on page load',
       (WidgetTester tester) async {
     await loadPage(tester);
     verify(presenter.loadData()).called(1);
@@ -86,7 +86,7 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
-  testWidgets('Should present error if surveysStream fails',
+  testWidgets('Should present error if surveyResultStream fails',
       (WidgetTester tester) async {
     await loadPage(tester);
     // expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -100,5 +100,18 @@ void main() {
     // expect(find.text('Question 1'), findsNothing); // a survey's question
 
     // expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
+  testWidgets('Should call LoadSurveyResult on reload button click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveyResultController.addError(UiError.unexpected.description);
+    await tester.pump();
+
+    await tester.tap(find.text('Recarregar'));
+
+    verify(presenter.loadData()).called(
+        2); // called when first loading the page and also after pressing the reload button
   });
 }
