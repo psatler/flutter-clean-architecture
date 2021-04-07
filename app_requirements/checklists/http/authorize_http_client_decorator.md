@@ -14,4 +14,4 @@
 
 > ## Exceção - HttpClient retornou erro Forbidden
 1. ✅ Retornar erro Forbidden
-2. Apagar token de acesso do cache
+2. ✅ Apagar token de acesso do cache
