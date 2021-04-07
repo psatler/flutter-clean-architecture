@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 import 'package:flutter_clean_arch/domain/entities/entities.dart';
 import 'package:flutter_clean_arch/domain/helpers/helpers.dart';
 import 'package:flutter_clean_arch/domain/usecases/usecases.dart';
-import 'package:flutter_clean_arch/presentation/presenters/getx_surveys_presenter.dart';
+import 'package:flutter_clean_arch/presentation/presenters/presenters.dart';
 import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
 import 'package:flutter_clean_arch/ui/pages/pages.dart';
 
