@@ -1,32 +1,37 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_clean_arch/ui/pages/survey_result/survey_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
 import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
-import 'package:flutter_clean_arch/ui/pages/surveys/surveys.dart';
+import 'package:flutter_clean_arch/ui/pages/survey_result/survey_result.dart';
 
 class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
 
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
+  StreamController<dynamic> surveyResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
+    surveyResultController = StreamController<dynamic>();
   }
 
   void mockStreams() {
     when(presenter.isLoadingStream)
         .thenAnswer((_) => isLoadingController.stream);
+
+    when(presenter.surveyResultStream)
+        .thenAnswer((_) => surveyResultController.stream);
   }
 
   void closeStream() {
     isLoadingController.close();
+    surveyResultController.close();
   }
 
   Future<void> loadPage(WidgetTester tester) async {
@@ -79,5 +84,21 @@ void main() {
     isLoadingController.add(null);
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsNothing);
+  });
+
+  testWidgets('Should present error if surveysStream fails',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+    // expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    surveyResultController.addError(UiError.unexpected.description);
+    await tester.pump();
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsOneWidget);
+    expect(find.text('Recarregar'), findsOneWidget); // reload button
+    // expect(find.text('Question 1'), findsNothing); // a survey's question
+
+    // expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 }
