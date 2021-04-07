@@ -8,17 +8,18 @@ import 'package:network_image_mock/network_image_mock.dart';
 
 import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
 import 'package:flutter_clean_arch/ui/pages/survey_result/survey_result.dart';
+import 'package:flutter_clean_arch/ui/pages/survey_result/components/components.dart';
 
 class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
 
 void main() {
   SurveyResultPresenterSpy presenter;
   StreamController<bool> isLoadingController;
-  StreamController<dynamic> surveyResultController;
+  StreamController<SurveyResultViewModel> surveyResultController;
 
   void initStreams() {
     isLoadingController = StreamController<bool>();
-    surveyResultController = StreamController<dynamic>();
+    surveyResultController = StreamController<SurveyResultViewModel>();
   }
 
   void mockStreams() {
@@ -55,6 +56,24 @@ void main() {
       () async => await tester.pumpWidget(surveysPage),
     );
   }
+
+  SurveyResultViewModel makeSurveyResult() => SurveyResultViewModel(
+        surveyId: 'any_id',
+        question: 'Question',
+        answers: [
+          SurveyAnswerViewModel(
+            image: 'Image 0',
+            answer: 'Answer 0',
+            isCurrentAnswer: true,
+            percent: '60%',
+          ),
+          SurveyAnswerViewModel(
+            answer: 'Answer 1',
+            isCurrentAnswer: false,
+            percent: '40%',
+          ),
+        ],
+      );
 
   tearDown(() {
     closeStream();
@@ -97,7 +116,7 @@ void main() {
     expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
         findsOneWidget);
     expect(find.text('Recarregar'), findsOneWidget); // reload button
-    // expect(find.text('Question 1'), findsNothing); // a survey's question
+    expect(find.text('Question'), findsNothing); // a survey's question
 
     // expect(find.byType(CircularProgressIndicator), findsNothing);
   });
@@ -113,5 +132,35 @@ void main() {
 
     verify(presenter.loadData()).called(
         2); // called when first loading the page and also after pressing the reload button
+  });
+
+  testWidgets('Should present valid data if surveyResultStream succeeds',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+    // expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    surveyResultController.add(makeSurveyResult());
+    await mockNetworkImagesFor(
+      () async => await tester.pump(),
+    );
+
+    expect(find.text('Algo errado aconteceu. Tente novamente em breve.'),
+        findsNothing);
+    expect(find.text('Recarregar'), findsNothing); // reload button
+    expect(find.text('Question'), findsOneWidget);
+    expect(find.text('Answer 0'), findsOneWidget);
+    expect(find.text('Answer 1'), findsOneWidget);
+    expect(find.text('60%'), findsOneWidget);
+    expect(find.text('40%'), findsOneWidget);
+
+    // find by color: https://stackoverflow.com/questions/59190126/check-for-color-during-widget-test
+
+    expect(find.byType(ActiveIcon), findsOneWidget);
+    expect(find.byType(DisabledIcon), findsOneWidget);
+
+    final networkImage =
+        tester.widget<Image>(find.byType(Image)).image as NetworkImage;
+
+    expect(networkImage.url, 'Image 0');
   });
 }
