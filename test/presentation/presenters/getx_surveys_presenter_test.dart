@@ -69,6 +69,15 @@ void main() {
     await sut.loadData();
   });
 
+  test('Should go to SurveyResult page on survey click', () async {
+    sut.navigateToStream.listen(expectAsync1((page) => expect(
+          page,
+          '/survey_result/any_route',
+        )));
+
+    sut.goToSurveyResult('any_route');
+  });
+
   // test below is not working because I won't be able to add Error to stream
   // (stream.subject.addError complains about NoSuchMethodError)
   // test('Should emit correct events/streams on failure', () async {

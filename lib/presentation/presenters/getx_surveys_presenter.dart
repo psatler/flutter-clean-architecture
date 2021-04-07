@@ -13,8 +13,10 @@ class GetxSurveysPresenter implements SurveysPresenter {
   final LoadSurveys loadSurveys;
 
   final _surveys = Rx<List<SurveyViewModel>>(null);
+  final _navigateTo = RxString(null);
 
   Stream<List<SurveyViewModel>> get surveysStream => _surveys.stream;
+  Stream<String> get navigateToStream => _navigateTo.stream;
 
   GetxSurveysPresenter({
     @required this.loadSurveys,
@@ -37,5 +39,9 @@ class GetxSurveysPresenter implements SurveysPresenter {
       // _surveys.addError(UiError.unexpected.description);
       // _surveys.subject.addError(UiError.unexpected.description);
     }
+  }
+
+  void goToSurveyResult(String surveyId) {
+    _navigateTo.value = '/survey_result/$surveyId';
   }
 }

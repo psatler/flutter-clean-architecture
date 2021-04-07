@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -22,28 +24,41 @@ class SurveysPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(R.strings.surveys),
       ),
-      body: StreamBuilder<List<SurveyViewModel>>(
-        stream: presenter.surveysStream,
-        builder: (context, snapshot) {
-          debugPrint('snapshot $snapshot');
-          debugPrint('snapshot.hasError ${snapshot.hasError}');
+      body: Builder(
+        builder: (context) {
+          presenter.navigateToStream.listen((page) {
+            if (page?.isNotEmpty == true) {
+              Get.toNamed(page);
+            }
+          });
 
-          if (snapshot.hasError) {
-            return ReloadScreen(
-              error: snapshot.error,
-              reload: presenter.loadData,
-            );
-          }
+          return StreamBuilder<List<SurveyViewModel>>(
+            stream: presenter.surveysStream,
+            builder: (context, snapshot) {
+              debugPrint('snapshot $snapshot');
+              debugPrint('snapshot.hasError ${snapshot.hasError}');
 
-          if (snapshot.hasData) {
-            return SurveyItems(
-              viewModels: snapshot.data,
-            );
-          }
+              if (snapshot.hasError) {
+                return ReloadScreen(
+                  error: snapshot.error,
+                  reload: presenter.loadData,
+                );
+              }
 
-          // return Container(width: 0.0, height: 0.0);
-          return Center(
-            child: CircularProgressIndicator(),
+              if (snapshot.hasData) {
+                return Provider(
+                  create: (_) => presenter,
+                  child: SurveyItems(
+                    viewModels: snapshot.data,
+                  ),
+                );
+              }
+
+              // return Container(width: 0.0, height: 0.0);
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           );
         },
       ),

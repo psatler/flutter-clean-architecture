@@ -13,11 +13,15 @@ class SurveysPresenterSpy extends Mock implements SurveysPresenter {}
 void main() {
   SurveysPresenterSpy presenter;
   StreamController<List<SurveyViewModel>> surveysController;
+  StreamController<String> navigateToController;
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = SurveysPresenterSpy();
     surveysController = StreamController<List<SurveyViewModel>>();
+    navigateToController = StreamController<String>();
     when(presenter.surveysStream).thenAnswer((_) => surveysController.stream);
+    when(presenter.navigateToStream)
+        .thenAnswer((_) => navigateToController.stream);
 
     final surveysPage = GetMaterialApp(
       initialRoute: '/surveys',
@@ -26,7 +30,9 @@ void main() {
             name: '/surveys',
             page: () => SurveysPage(
                   presenter: presenter,
-                ))
+                )),
+        GetPage(
+            name: '/any_route', page: () => Scaffold(body: Text('fake page'))),
       ],
     );
 
@@ -50,6 +56,7 @@ void main() {
 
   tearDown(() {
     surveysController.close();
+    navigateToController.close();
   });
 
   testWidgets('Should call LoadSurveys on page load',
@@ -127,5 +134,30 @@ void main() {
 
     verify(presenter.loadData()).called(
         2); // called when first loading the page and also after pressing the reload button
+  });
+
+  testWidgets('Should call goToSurveyResult on survey click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveysController.add(makeSurveys());
+
+    await tester.pump();
+    await tester.tap(find.text('Question 1'));
+    await tester.pump();
+
+    verify(presenter.goToSurveyResult('1')).called(1);
+  });
+
+  testWidgets('Should change page', (WidgetTester tester) async {
+    // Material App above was changed to GetMaterialApp and a fake page was created
+
+    await loadPage(tester);
+
+    navigateToController.add('/any_route');
+    await tester.pumpAndSettle();
+
+    expect(Get.currentRoute, '/any_route');
+    expect(find.text('fake page'), findsOneWidget);
   });
 }
