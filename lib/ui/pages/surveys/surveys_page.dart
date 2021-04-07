@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -37,18 +36,8 @@ class SurveysPage extends StatelessWidget {
           }
 
           if (snapshot.hasData) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  enlargeCenterPage: true,
-                  aspectRatio: 1,
-                  // enableInfiniteScroll: false,
-                ),
-                items: snapshot.data
-                    .map((viewModel) => SurveyItem(viewModel))
-                    .toList(),
-              ),
+            return SurveyItems(
+              viewModels: snapshot.data,
             );
           }
 
