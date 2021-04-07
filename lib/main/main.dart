@@ -32,7 +32,7 @@ class App extends StatelessWidget {
       title: 'Survey app - Clean Architecture',
       debugShowCheckedModeBanner: false,
       theme: makeTheme(),
-      initialRoute: '/survey_result/3',
+      initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),
         GetPage(

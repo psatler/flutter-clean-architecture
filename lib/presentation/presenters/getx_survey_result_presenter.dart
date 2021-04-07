@@ -12,7 +12,7 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter {
   final LoadSurveysResult loadSurveyResult;
   final String surveyId;
 
-  final _isLoading = true.obs;
+  final _isLoading = RxBool(true);
   final _surveyResult = Rx<SurveyResultViewModel>(null);
 
   Stream<bool> get isLoadingStream => _isLoading.stream;

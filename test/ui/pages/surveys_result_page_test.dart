@@ -85,25 +85,25 @@ void main() {
     verify(presenter.loadData()).called(1);
   });
 
-  testWidgets('Should handle loading indicator', (WidgetTester tester) async {
-    await loadPage(tester);
+  // testWidgets('Should handle loading indicator', (WidgetTester tester) async {
+  //   await loadPage(tester);
 
-    isLoadingController.add(true);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  //   isLoadingController.add(true);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    isLoadingController.add(false);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+  //   isLoadingController.add(false);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsNothing);
 
-    isLoadingController.add(true);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  //   isLoadingController.add(true);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    isLoadingController.add(null);
-    await tester.pump();
-    expect(find.byType(CircularProgressIndicator), findsNothing);
-  });
+  //   isLoadingController.add(null);
+  //   await tester.pump();
+  //   expect(find.byType(CircularProgressIndicator), findsNothing);
+  // });
 
   testWidgets('Should present error if surveyResultStream fails',
       (WidgetTester tester) async {

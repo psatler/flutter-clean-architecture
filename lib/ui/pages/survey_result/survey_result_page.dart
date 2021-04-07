@@ -16,41 +16,30 @@ class SurveyResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    presenter.loadData();
     return Scaffold(
       appBar: AppBar(
         title: Text(R.strings.surveys),
       ),
-      body: Builder(builder: (context) {
-        presenter.isLoadingStream.listen((isLoading) {
-          if (isLoading == true) {
-            showLoading(context);
-          } else {
-            hideLoading(context);
-          }
-        });
-        presenter.loadData();
-
-        return StreamBuilder<SurveyResultViewModel>(
-          stream: presenter.surveyResultStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return ReloadScreen(
-                error: snapshot.error,
-                reload: presenter.loadData,
-              );
-            }
-
-            if (snapshot.hasData) {
-              return SurveyResult(viewModel: snapshot.data);
-            }
-
-            return Container(
-              width: 0,
-              height: 0,
+      body: StreamBuilder<SurveyResultViewModel>(
+        stream: presenter.surveyResultStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return ReloadScreen(
+              error: snapshot.error,
+              reload: presenter.loadData,
             );
-          },
-        );
-      }),
+          }
+
+          if (snapshot.hasData) {
+            return SurveyResult(viewModel: snapshot.data);
+          }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }
