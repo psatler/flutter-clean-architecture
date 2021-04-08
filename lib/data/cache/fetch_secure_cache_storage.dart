@@ -1,4 +1,4 @@
 // used by the SecureStorageAdapter
 abstract class FetchSecureCacheStorage {
-  Future<String> fetchSecure(String key);
+  Future<String> fetch(String key);
 }
