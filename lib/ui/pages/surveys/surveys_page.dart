@@ -32,6 +32,12 @@ class SurveysPage extends StatelessWidget {
             }
           });
 
+          presenter.isSessionExpiredStream.listen((isExpired) {
+            if (isExpired == true) {
+              Get.offAllNamed('/login');
+            }
+          });
+
           return StreamBuilder<List<SurveyViewModel>>(
             stream: presenter.surveysStream,
             builder: (context, snapshot) {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -38,6 +40,9 @@ void main() {
 
   void mockLoadSurveysError() =>
       mockLoadSurveysCall().thenThrow(DomainError.unexpected);
+
+  void mockAccessDeniedError() =>
+      mockLoadSurveysCall().thenThrow(DomainError.accessDenied);
 
   setUp(() {
     loadSurveys = LoadSurveysSpy();
@@ -89,4 +94,13 @@ void main() {
 
   //   await sut.loadData();
   // });
+
+  test('Should emit correct event on access denied', () async {
+    mockAccessDeniedError();
+
+    // expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+    expectLater(sut.isSessionExpiredStream, emits(true));
+
+    await sut.loadData();
+  });
 }

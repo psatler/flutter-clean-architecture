@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../components/components.dart';
 import '../../helpers/helpers.dart';
@@ -17,26 +18,37 @@ class SurveyResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     presenter.loadData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(R.strings.surveys),
       ),
-      body: StreamBuilder<SurveyResultViewModel>(
-        stream: presenter.surveyResultStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return ReloadScreen(
-              error: snapshot.error,
-              reload: presenter.loadData,
-            );
-          }
+      body: Builder(
+        builder: (context) {
+          presenter.isSessionExpiredStream.listen((isExpired) {
+            if (isExpired == true) {
+              Get.offAllNamed('/login');
+            }
+          });
 
-          if (snapshot.hasData) {
-            return SurveyResult(viewModel: snapshot.data);
-          }
+          return StreamBuilder<SurveyResultViewModel>(
+            stream: presenter.surveyResultStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return ReloadScreen(
+                  error: snapshot.error,
+                  reload: presenter.loadData,
+                );
+              }
 
-          return Center(
-            child: CircularProgressIndicator(),
+              if (snapshot.hasData) {
+                return SurveyResult(viewModel: snapshot.data);
+              }
+
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           );
         },
       ),

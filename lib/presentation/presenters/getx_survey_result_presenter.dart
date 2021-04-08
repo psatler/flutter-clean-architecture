@@ -13,9 +13,11 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter {
   final String surveyId;
 
   final _isLoading = RxBool(true);
+  final _isSessionExpired = RxBool(false);
   final _surveyResult = Rx<SurveyResultViewModel>(null);
 
   Stream<bool> get isLoadingStream => _isLoading.stream;
+  Stream<bool> get isSessionExpiredStream => _isSessionExpired.stream;
   Stream<SurveyResultViewModel> get surveyResultStream => _surveyResult.stream;
 
   GetxSurveyResultPresenter({
@@ -42,10 +44,14 @@ class GetxSurveyResultPresenter implements SurveyResultPresenter {
                 ))
             .toList(),
       );
-    } on DomainError {
-      print(UiError.unexpected.description);
-      // _surveys.addError(UiError.unexpected.description);
-      _surveyResult.subject.addError(UiError.unexpected.description);
+    } on DomainError catch (error) {
+      if (error == DomainError.accessDenied) {
+        _isSessionExpired.value = true;
+      } else {
+        print(UiError.unexpected.description);
+        // _surveys.addError(UiError.unexpected.description);
+        _surveyResult.subject.addError(UiError.unexpected.description);
+      }
     } finally {
       _isLoading.value = false;
     }
