@@ -7,7 +7,7 @@ import '../../../domain/entities/entities.dart';
 import '../../../domain/helpers/helpers.dart';
 import '../../../domain/usecases/usecases.dart';
 
-class RemoteSaveSurveyResult {
+class RemoteSaveSurveyResult implements SaveSurveyResult {
   final String url;
   final HttpClient httpClient;
 
@@ -16,15 +16,17 @@ class RemoteSaveSurveyResult {
     @required this.httpClient,
   });
 
-  Future<void> save({String answer}) async {
+  Future<SurveyResultEntity> save({String answer}) async {
     try {
-      await httpClient.request(
+      final jsonResponse = await httpClient.request(
         url: url,
         method: 'put',
         body: {
           'answer': answer,
         },
       );
+
+      return RemoteSurveyResultModel.fromJson(jsonResponse).toEntity();
     } on HttpError catch (error) {
       HttpError.forbidden == error
           ? throw DomainError.accessDenied
