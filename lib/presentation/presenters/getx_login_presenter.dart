@@ -11,7 +11,7 @@ import '../protocols/protocols.dart';
 import '../mixins/mixins.dart';
 
 class GetxLoginPresenter extends GetxController
-    with LoadingManager
+    with LoadingManager, FormManager, NavigationManager, UIErrorManager
     implements LoginPresenter {
   final Validation validation;
   final Authentication authentication;
@@ -29,16 +29,9 @@ class GetxLoginPresenter extends GetxController
   // creating observers for the streams using GetX
   var _emailError = Rx<UiError>(null);
   var _passwordError = Rx<UiError>(null);
-  var _mainError = Rx<UiError>(null);
-  var _navigateTo = RxString(null);
-  // shortcut to create an RxBool with initial value as false
-  var _isFormValid = false.obs;
 
   Stream<UiError> get emailErrorStream => _emailError.stream;
   Stream<UiError> get passwordErrorStream => _passwordError.stream;
-  Stream<UiError> get mainErrorStream => _mainError.stream;
-  Stream<String> get navigateToStream => _navigateTo.stream;
-  Stream<bool> get isFormValidStream => _isFormValid.stream;
 
   void validateEmail(String email) {
     _email = email;
@@ -55,7 +48,7 @@ class GetxLoginPresenter extends GetxController
 
   void _validateForm() {
     // setting a new value to the isFormValid observer of GetX
-    _isFormValid.value = _emailError.value == null &&
+    isFormValid = _emailError.value == null &&
         _passwordError.value == null &&
         _email != null &&
         _password != null;
@@ -85,7 +78,7 @@ class GetxLoginPresenter extends GetxController
     isLoading = true;
 
     try {
-      _mainError.value = null;
+      mainError = null;
       AccountEntity accountEntity =
           await authentication.auth(AuthenticationParams(
         email: _email,
@@ -93,15 +86,15 @@ class GetxLoginPresenter extends GetxController
       ));
 
       await saveCurrentAccount.save(accountEntity);
-      _navigateTo.value = '/surveys';
+      navigateTo = '/surveys';
     } on DomainError catch (error) {
       switch (error) {
         case DomainError.invalidCredentials:
-          _mainError.value = UiError.invalidCredentials;
+          mainError = UiError.invalidCredentials;
           break;
 
         default:
-          _mainError.value = UiError.unexpected;
+          mainError = UiError.unexpected;
           break;
       }
     }
@@ -110,6 +103,6 @@ class GetxLoginPresenter extends GetxController
   }
 
   void goToSignUp() {
-    _navigateTo.value = '/signup';
+    navigateTo = '/signup';
   }
 }
