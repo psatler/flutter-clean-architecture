@@ -17,12 +17,18 @@ class RemoteSaveSurveyResult {
   });
 
   Future<void> save({String answer}) async {
-    await httpClient.request(
-      url: url,
-      method: 'put',
-      body: {
-        'answer': answer,
-      },
-    );
+    try {
+      await httpClient.request(
+        url: url,
+        method: 'put',
+        body: {
+          'answer': answer,
+        },
+      );
+    } on HttpError catch (error) {
+      HttpError.forbidden == error
+          ? throw DomainError.accessDenied
+          : throw DomainError.unexpected;
+    }
   }
 }
