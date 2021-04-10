@@ -9,3 +9,16 @@ LoadSurveysResult makeRemoteLoadSurveyResult(String surveyId) {
     url: makeApiUrl('surveys/$surveyId/results'),
   );
 }
+
+LoadSurveysResult makeLocalLoadSurveyResult(String surveyId) {
+  return LocalLoadSurveyResult(
+    cacheStorage: makeLocalStorageAdapter(),
+  );
+}
+
+LoadSurveysResult makeRemoteLoadSurveyWithLocalFallback(String surveyId) {
+  return RemoteLocalSurveyResultWithLocalFallback(
+    remote: makeRemoteLoadSurveyResult(surveyId),
+    local: makeLocalLoadSurveyResult(surveyId),
+  );
+}

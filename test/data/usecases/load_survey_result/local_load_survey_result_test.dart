@@ -227,10 +227,9 @@ void main() {
     LocalLoadSurveyResult sut;
     CacheStorageSpy cacheStorage;
     SurveyResultEntity surveyResult;
-    String surveyId;
 
     SurveyResultEntity mockSurveyResult() => SurveyResultEntity(
-          surveyId: surveyId,
+          surveyId: faker.guid.guid(),
           question: faker.lorem.sentence(),
           answers: [
             SurveyAnswerEntity(
@@ -253,7 +252,6 @@ void main() {
     void mockSaveError() => mockSaveCall().thenThrow(Exception());
 
     setUp(() {
-      surveyId = faker.guid.guid();
       cacheStorage = CacheStorageSpy();
       sut = LocalLoadSurveyResult(cacheStorage: cacheStorage);
 
@@ -283,7 +281,8 @@ void main() {
 
       await sut.save(surveyResult);
 
-      verify(cacheStorage.save(key: 'survey_result/$surveyId', value: json))
+      verify(cacheStorage.save(
+              key: 'survey_result/${surveyResult.surveyId}', value: json))
           .called(1);
     });
 
