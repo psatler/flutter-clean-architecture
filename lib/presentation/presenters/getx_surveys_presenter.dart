@@ -8,15 +8,14 @@ import '../../domain/usecases/usecases.dart';
 
 import '../../ui/helpers/helpers.dart';
 import '../../ui/pages/surveys/surveys.dart';
+import '../mixins/mixins.dart';
 
-class GetxSurveysPresenter implements SurveysPresenter {
+class GetxSurveysPresenter with SessionManager implements SurveysPresenter {
   final LoadSurveys loadSurveys;
 
   final _surveys = Rx<List<SurveyViewModel>>(null);
   final _navigateTo = RxString(null);
-  final _isSessionExpired = RxBool(false);
 
-  Stream<bool> get isSessionExpiredStream => _isSessionExpired.stream;
   Stream<List<SurveyViewModel>> get surveysStream => _surveys.stream;
   Stream<String> get navigateToStream => _navigateTo.stream;
 
@@ -38,7 +37,7 @@ class GetxSurveysPresenter implements SurveysPresenter {
           .toList();
     } on DomainError catch (error) {
       if (error == DomainError.accessDenied) {
-        _isSessionExpired.value = true;
+        isSessionExpired = true;
       } else {
         print(UiError.unexpected.description);
         // _surveys.addError(UiError.unexpected.description);

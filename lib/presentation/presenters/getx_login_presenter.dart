@@ -8,8 +8,11 @@ import '../../domain/helpers/helpers.dart';
 import '../../domain/usecases/usecases.dart';
 
 import '../protocols/protocols.dart';
+import '../mixins/mixins.dart';
 
-class GetxLoginPresenter extends GetxController implements LoginPresenter {
+class GetxLoginPresenter extends GetxController
+    with LoadingManager
+    implements LoginPresenter {
   final Validation validation;
   final Authentication authentication;
   final SaveCurrentAccount saveCurrentAccount;
@@ -30,14 +33,12 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
   var _navigateTo = RxString(null);
   // shortcut to create an RxBool with initial value as false
   var _isFormValid = false.obs;
-  var _isLoading = false.obs;
 
   Stream<UiError> get emailErrorStream => _emailError.stream;
   Stream<UiError> get passwordErrorStream => _passwordError.stream;
   Stream<UiError> get mainErrorStream => _mainError.stream;
   Stream<String> get navigateToStream => _navigateTo.stream;
   Stream<bool> get isFormValidStream => _isFormValid.stream;
-  Stream<bool> get isLoadingStream => _isLoading.stream;
 
   void validateEmail(String email) {
     _email = email;
@@ -81,7 +82,7 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
   }
 
   Future<void> auth() async {
-    _isLoading.value = true;
+    isLoading = true;
 
     try {
       _mainError.value = null;
@@ -105,7 +106,7 @@ class GetxLoginPresenter extends GetxController implements LoginPresenter {
       }
     }
 
-    _isLoading.value = false;
+    isLoading = false;
   }
 
   void goToSignUp() {
