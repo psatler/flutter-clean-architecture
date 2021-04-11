@@ -39,7 +39,10 @@ class SurveyResultPage extends StatelessWidget with SessionManager {
               }
 
               if (snapshot.hasData) {
-                return SurveyResult(viewModel: snapshot.data);
+                return SurveyResult(
+                  viewModel: snapshot.data,
+                  onSave: presenter.save,
+                );
               }
 
               return Center(

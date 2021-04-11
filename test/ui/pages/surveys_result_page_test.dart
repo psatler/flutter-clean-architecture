@@ -195,4 +195,18 @@ void main() {
         .pump(); // using only pump because the navigation will not occur and pumpAndSettle will timeout because of that
     expect(Get.currentRoute, '/survey_result/any_survey_id');
   });
+
+  testWidgets('Should call save on list item click',
+      (WidgetTester tester) async {
+    await loadPage(tester);
+
+    surveyResultController.add(makeSurveyResult());
+    await mockNetworkImagesFor(
+      () async => await tester.pump(),
+    );
+
+    await tester.tap(find.text('Answer 1'));
+
+    verify(presenter.save(answer: 'Answer 1')).called(1);
+  });
 }
