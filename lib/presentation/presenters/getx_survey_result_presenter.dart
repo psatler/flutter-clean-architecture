@@ -27,42 +27,19 @@ class GetxSurveyResultPresenter extends GetxController
   });
 
   Future<void> loadData() async {
-    try {
-      isLoading = true;
-
-      SurveyResultEntity surveyResult =
-          await loadSurveyResult.loadBySurvey(surveyId: surveyId);
-
-      _surveyResult.value = SurveyResultViewModel(
-        surveyId: surveyResult.surveyId,
-        question: surveyResult.question,
-        answers: surveyResult.answers
-            .map((answer) => SurveyAnswerViewModel(
-                  image: answer.image,
-                  answer: answer.answer,
-                  isCurrentAnswer: answer.isCurrentAnswer,
-                  percent: '${answer.percent}%',
-                ))
-            .toList(),
-      );
-    } on DomainError catch (error) {
-      if (error == DomainError.accessDenied) {
-        isSessionExpired = true;
-      } else {
-        print(UiError.unexpected.description);
-        // _surveys.addError(UiError.unexpected.description);
-        _surveyResult.subject.addError(UiError.unexpected.description);
-      }
-    } finally {
-      isLoading = false;
-    }
+    _showResultOnAction(
+        () => loadSurveyResult.loadBySurvey(surveyId: surveyId));
   }
 
   Future<void> save({@required String answer}) async {
+    _showResultOnAction(() => saveSurveyResult.save(answer: answer));
+  }
+
+  // passing a function action without parameters
+  Future<void> _showResultOnAction(Future<SurveyResultEntity> action()) async {
     try {
       isLoading = true;
-      SurveyResultEntity surveyResult =
-          await saveSurveyResult.save(answer: answer);
+      SurveyResultEntity surveyResult = await action();
 
       _surveyResult.value = SurveyResultViewModel(
         surveyId: surveyResult.surveyId,
