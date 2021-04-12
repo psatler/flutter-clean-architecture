@@ -75,11 +75,15 @@ void main() {
   });
 
   test('Should go to SurveyResult page on survey click', () async {
-    sut.navigateToStream.listen(expectAsync1((page) => expect(
-          page,
+    // when clicking two times, we should see two events being emitted
+    expectLater(
+        sut.navigateToStream,
+        emitsInOrder([
           '/survey_result/any_route',
-        )));
+          '/survey_result/any_route',
+        ]));
 
+    sut.goToSurveyResult('any_route');
     sut.goToSurveyResult('any_route');
   });
 
