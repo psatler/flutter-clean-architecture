@@ -9,6 +9,7 @@ import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
 import 'package:flutter_clean_arch/ui/pages/survey_result/survey_result.dart';
 import 'package:flutter_clean_arch/ui/pages/survey_result/components/components.dart';
 
+import '../../mocks/mocks.dart';
 import '../helpers/helpers.dart';
 
 class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
@@ -57,24 +58,6 @@ void main() {
       () async => await tester.pumpWidget(surveysResultPage),
     );
   }
-
-  SurveyResultViewModel makeSurveyResult() => SurveyResultViewModel(
-        surveyId: 'any_id',
-        question: 'Question',
-        answers: [
-          SurveyAnswerViewModel(
-            image: 'Image 0',
-            answer: 'Answer 0',
-            isCurrentAnswer: true,
-            percent: '60%',
-          ),
-          SurveyAnswerViewModel(
-            answer: 'Answer 1',
-            isCurrentAnswer: false,
-            percent: '40%',
-          ),
-        ],
-      );
 
   tearDown(() {
     closeStream();
@@ -140,7 +123,7 @@ void main() {
     await loadPage(tester);
     // expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    surveyResultController.add(makeSurveyResult());
+    surveyResultController.add(FakeSurveyResultFactory.makeViewModel());
     await mockNetworkImagesFor(
       () async => await tester.pump(),
     );
@@ -194,7 +177,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveyResultController.add(makeSurveyResult());
+    surveyResultController.add(FakeSurveyResultFactory.makeViewModel());
     await mockNetworkImagesFor(
       () async => await tester.pump(),
     );
@@ -208,7 +191,7 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
 
-    surveyResultController.add(makeSurveyResult());
+    surveyResultController.add(FakeSurveyResultFactory.makeViewModel());
     await mockNetworkImagesFor(
       () async => await tester.pump(),
     );

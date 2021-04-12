@@ -9,6 +9,8 @@ import 'package:flutter_clean_arch/presentation/presenters/presenters.dart';
 import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
 import 'package:flutter_clean_arch/ui/pages/pages.dart';
 
+import '../../mocks/mocks.dart';
+
 class LoadSurveyResultSpy extends Mock implements LoadSurveysResult {}
 
 class SaveSurveyResultSpy extends Mock implements SaveSurveyResult {}
@@ -21,23 +23,6 @@ void main() {
   SurveyResultEntity saveResult;
   String surveyId;
   String answer;
-
-  SurveyResultEntity mockValidData() => SurveyResultEntity(
-          surveyId: faker.guid.guid(),
-          question: faker.lorem.sentence(),
-          answers: [
-            SurveyAnswerEntity(
-              image: faker.internet.httpUrl(),
-              answer: faker.lorem.sentence(),
-              percent: faker.randomGenerator.integer(100),
-              isCurrentAnswer: faker.randomGenerator.boolean(),
-            ),
-            SurveyAnswerEntity(
-              answer: faker.lorem.sentence(),
-              percent: faker.randomGenerator.integer(100),
-              isCurrentAnswer: faker.randomGenerator.boolean(),
-            ),
-          ]);
 
   PostExpectation mockLoadSurveyResultCall() =>
       when(loadSurveyResult.loadBySurvey(surveyId: anyNamed('surveyId')));
@@ -88,8 +73,8 @@ void main() {
       surveyId: surveyId,
     );
 
-    mockLoadSurveyResult(mockValidData());
-    mockSaveSurveyResult(mockValidData());
+    mockLoadSurveyResult(FakeSurveyResultFactory.mockSurveyResultEntity());
+    mockSaveSurveyResult(FakeSurveyResultFactory.mockSurveyResultEntity());
   });
 
   group('load data', () {
