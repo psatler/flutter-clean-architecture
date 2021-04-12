@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
 import 'package:flutter_clean_arch/ui/pages/surveys/surveys.dart';
+
+import '../helpers/helpers.dart';
 
 class SurveysPresenterSpy extends Mock implements SurveysPresenter {}
 
@@ -28,27 +29,10 @@ void main() {
     when(presenter.isSessionExpiredStream)
         .thenAnswer((_) => isSessionExpiredController.stream);
 
-    final routeObserver = Get.put<RouteObserver>(RouteObserver<PageRoute>());
-    final surveysPage = GetMaterialApp(
-      initialRoute: '/surveys',
-      navigatorObservers: [routeObserver],
-      getPages: [
-        GetPage(
-            name: '/surveys',
-            page: () => SurveysPage(
-                  presenter: presenter,
-                )),
-        GetPage(
-            name: '/any_route',
-            page: () => Scaffold(
-                appBar: AppBar(
-                  title: Text('any title'),
-                ),
-                body: Text('fake page'))),
-        GetPage(name: '/login', page: () => Scaffold(body: Text('fake login'))),
-      ],
+    final surveysPage = makePage(
+      path: '/surveys',
+      pageBeingTested: () => SurveysPage(presenter: presenter),
     );
-
     await tester.pumpWidget(surveysPage);
   }
 
@@ -181,7 +165,7 @@ void main() {
     navigateToController.add('/any_route');
     await tester.pumpAndSettle();
 
-    expect(Get.currentRoute, '/any_route');
+    expect(currentRoute, '/any_route');
     expect(find.text('fake page'), findsOneWidget);
   });
 
@@ -192,7 +176,7 @@ void main() {
     isSessionExpiredController.add(true);
     await tester.pumpAndSettle();
 
-    expect(Get.currentRoute, '/login');
+    expect(currentRoute, '/login');
     expect(find.text('fake login'), findsOneWidget);
   });
 
@@ -202,11 +186,11 @@ void main() {
     isSessionExpiredController.add(false);
     await tester
         .pump(); // using only pump because the navigation will not occur and pumpAndSettle will timeout because of that
-    expect(Get.currentRoute, '/surveys');
+    expect(currentRoute, '/surveys');
 
     isSessionExpiredController.add(null);
     await tester
         .pump(); // using only pump because the navigation will not occur and pumpAndSettle will timeout because of that
-    expect(Get.currentRoute, '/surveys');
+    expect(currentRoute, '/surveys');
   });
 }

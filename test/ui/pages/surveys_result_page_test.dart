@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
 import 'package:flutter_clean_arch/ui/helpers/helpers.dart';
 import 'package:flutter_clean_arch/ui/pages/survey_result/survey_result.dart';
 import 'package:flutter_clean_arch/ui/pages/survey_result/components/components.dart';
+
+import '../helpers/helpers.dart';
 
 class SurveyResultPresenterSpy extends Mock implements SurveyResultPresenter {}
 
@@ -47,20 +48,13 @@ void main() {
     initStreams();
     mockStreams();
 
-    final surveysPage = GetMaterialApp(
-      initialRoute: '/survey_result/any_survey_id',
-      getPages: [
-        GetPage(
-            name: '/survey_result/:survey_id',
-            page: () => SurveyResultPage(
-                  presenter: presenter,
-                )),
-        GetPage(name: '/login', page: () => Scaffold(body: Text('fake login'))),
-      ],
+    final surveysResultPage = makePage(
+      path: '/survey_result/any_survey_id',
+      pageBeingTested: () => SurveyResultPage(presenter: presenter),
     );
 
     await mockNetworkImagesFor(
-      () async => await tester.pumpWidget(surveysPage),
+      () async => await tester.pumpWidget(surveysResultPage),
     );
   }
 
@@ -178,7 +172,7 @@ void main() {
     isSessionExpiredController.add(true);
     await tester.pumpAndSettle();
 
-    expect(Get.currentRoute, '/login');
+    expect(currentRoute, '/login');
     expect(find.text('fake login'), findsOneWidget);
   });
 
@@ -188,12 +182,12 @@ void main() {
     isSessionExpiredController.add(false);
     await tester
         .pump(); // using only pump because the navigation will not occur and pumpAndSettle will timeout because of that
-    expect(Get.currentRoute, '/survey_result/any_survey_id');
+    expect(currentRoute, '/survey_result/any_survey_id');
 
     isSessionExpiredController.add(null);
     await tester
         .pump(); // using only pump because the navigation will not occur and pumpAndSettle will timeout because of that
-    expect(Get.currentRoute, '/survey_result/any_survey_id');
+    expect(currentRoute, '/survey_result/any_survey_id');
   });
 
   testWidgets('Should call save on list item click',

@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get/get.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:flutter_clean_arch/ui/helpers/errors/errors.dart';
 import 'package:flutter_clean_arch/ui/pages/pages.dart';
+
+import '../helpers/helpers.dart';
 
 class SignUpPresenterSpy extends Mock implements SignUpPresenter {}
 
@@ -68,13 +69,9 @@ void main() {
     initStreams();
     mockStreams();
 
-    final signUpPage = GetMaterialApp(
-      initialRoute: '/signup',
-      getPages: [
-        GetPage(name: '/signup', page: () => SignUpPage(presenter)),
-        GetPage(
-            name: '/any_route', page: () => Scaffold(body: Text('fake page'))),
-      ],
+    final signUpPage = makePage(
+      path: '/signup',
+      pageBeingTested: () => SignUpPage(presenter),
     );
     await tester.pumpWidget(signUpPage);
   }
@@ -343,7 +340,7 @@ void main() {
     navigateToController.add('/any_route');
     await tester.pumpAndSettle();
 
-    expect(Get.currentRoute, '/any_route');
+    expect(currentRoute, '/any_route');
     expect(find.text('fake page'), findsOneWidget);
   });
 
@@ -353,11 +350,11 @@ void main() {
     navigateToController.add('');
     await tester
         .pump(); // using only pump because the navigation will not occur and pumpAndSettle will timeout because of that
-    expect(Get.currentRoute, '/signup');
+    expect(currentRoute, '/signup');
 
     navigateToController.add(null);
     await tester.pump();
-    expect(Get.currentRoute, '/signup');
+    expect(currentRoute, '/signup');
   });
 
   testWidgets('Should call Login on link click', (WidgetTester tester) async {
