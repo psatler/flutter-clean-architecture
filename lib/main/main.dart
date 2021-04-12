@@ -28,10 +28,15 @@ class App extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.light); // to keep status bar white on iOS
 
+    final routeObserver = Get.put<RouteObserver>(RouteObserver<PageRoute>());
+
     return GetMaterialApp(
       title: 'Survey app - Clean Architecture',
       debugShowCheckedModeBanner: false,
       theme: makeTheme(),
+      navigatorObservers: [
+        routeObserver,
+      ],
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: makeSplashPage, transition: Transition.fade),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/components.dart';
@@ -10,8 +11,7 @@ import 'components/components.dart';
 import 'surveys_presenter.dart';
 import 'survey_view_model.dart';
 
-class SurveysPage extends StatelessWidget
-    with NavigationManager, SessionManager {
+class SurveysPage extends StatefulWidget {
   final SurveysPresenter presenter;
 
   const SurveysPage({
@@ -19,8 +19,17 @@ class SurveysPage extends StatelessWidget
   });
 
   @override
+  _SurveysPageState createState() => _SurveysPageState();
+}
+
+class _SurveysPageState extends State<SurveysPage>
+    with NavigationManager, SessionManager, RouteAware {
+  @override
   Widget build(BuildContext context) {
-    presenter.loadData();
+    final routeObserver = Get.find<RouteObserver>();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+
+    widget.presenter.loadData();
 
     return Scaffold(
       appBar: AppBar(
@@ -28,12 +37,12 @@ class SurveysPage extends StatelessWidget
       ),
       body: Builder(
         builder: (context) {
-          handleNavigation(presenter.navigateToStream);
+          handleNavigation(widget.presenter.navigateToStream);
 
-          handleSessionExpired(presenter.isSessionExpiredStream);
+          handleSessionExpired(widget.presenter.isSessionExpiredStream);
 
           return StreamBuilder<List<SurveyViewModel>>(
-            stream: presenter.surveysStream,
+            stream: widget.presenter.surveysStream,
             builder: (context, snapshot) {
               debugPrint('snapshot $snapshot');
               debugPrint('snapshot.hasError ${snapshot.hasError}');
@@ -41,13 +50,13 @@ class SurveysPage extends StatelessWidget
               if (snapshot.hasError) {
                 return ReloadScreen(
                   error: snapshot.error,
-                  reload: presenter.loadData,
+                  reload: widget.presenter.loadData,
                 );
               }
 
               if (snapshot.hasData) {
                 return Provider(
-                  create: (_) => presenter,
+                  create: (_) => widget.presenter,
                   child: SurveyItems(
                     viewModels: snapshot.data,
                   ),
@@ -63,5 +72,18 @@ class SurveysPage extends StatelessWidget
         },
       ),
     );
+  }
+
+  @override
+  void didPopNext() {
+    widget.presenter.loadData();
+    // super.didPopNext();
+  }
+
+  @override
+  void dispose() {
+    final routeObserver = Get.find<RouteObserver>();
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 }

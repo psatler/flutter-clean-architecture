@@ -28,8 +28,10 @@ void main() {
     when(presenter.isSessionExpiredStream)
         .thenAnswer((_) => isSessionExpiredController.stream);
 
+    final routeObserver = Get.put<RouteObserver>(RouteObserver<PageRoute>());
     final surveysPage = GetMaterialApp(
       initialRoute: '/surveys',
+      navigatorObservers: [routeObserver],
       getPages: [
         GetPage(
             name: '/surveys',
@@ -37,7 +39,12 @@ void main() {
                   presenter: presenter,
                 )),
         GetPage(
-            name: '/any_route', page: () => Scaffold(body: Text('fake page'))),
+            name: '/any_route',
+            page: () => Scaffold(
+                appBar: AppBar(
+                  title: Text('any title'),
+                ),
+                body: Text('fake page'))),
         GetPage(name: '/login', page: () => Scaffold(body: Text('fake login'))),
       ],
     );
@@ -70,6 +77,16 @@ void main() {
       (WidgetTester tester) async {
     await loadPage(tester);
     verify(presenter.loadData()).called(1);
+  });
+
+  testWidgets('Should call LoadSurveys on reload', (WidgetTester tester) async {
+    await loadPage(tester);
+
+    navigateToController.add('/any_route');
+    await tester.pumpAndSettle(); // wait until the page renders completely
+    await tester.pageBack();
+
+    verify(presenter.loadData()).called(2);
   });
 
   // testWidgets('Should handle loading indicator', (WidgetTester tester) async {
