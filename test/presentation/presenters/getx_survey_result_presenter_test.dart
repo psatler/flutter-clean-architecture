@@ -17,7 +17,8 @@ void main() {
   GetxSurveyResultPresenter sut;
   LoadSurveyResultSpy loadSurveyResult;
   SaveSurveyResultSpy saveSurveyResult;
-  SurveyResultEntity surveyResult;
+  SurveyResultEntity loadResult;
+  SurveyResultEntity saveResult;
   String surveyId;
   String answer;
 
@@ -42,7 +43,7 @@ void main() {
       when(loadSurveyResult.loadBySurvey(surveyId: anyNamed('surveyId')));
 
   void mockLoadSurveyResult(SurveyResultEntity data) {
-    surveyResult = data;
+    loadResult = data;
     mockLoadSurveyResultCall().thenAnswer((_) async => data);
   }
 
@@ -51,6 +52,14 @@ void main() {
 
   void mockAccessDeniedError() =>
       mockLoadSurveyResultCall().thenThrow(DomainError.accessDenied);
+
+  PostExpectation mockSaveSurveyResultCall() =>
+      when(saveSurveyResult.save(answer: anyNamed('answer')));
+
+  void mockSaveSurveyResult(SurveyResultEntity data) {
+    saveResult = data;
+    mockSaveSurveyResultCall().thenAnswer((_) async => data);
+  }
 
   setUp(() {
     surveyId = faker.guid.guid();
@@ -64,6 +73,7 @@ void main() {
     );
 
     mockLoadSurveyResult(mockValidData());
+    mockSaveSurveyResult(mockValidData());
   });
 
   group('load data', () {
@@ -78,18 +88,18 @@ void main() {
       sut.surveyResultStream.listen(expectAsync1((result) => expect(
           result,
           SurveyResultViewModel(
-              surveyId: surveyResult.surveyId,
-              question: surveyResult.question,
+              surveyId: loadResult.surveyId,
+              question: loadResult.question,
               answers: [
                 SurveyAnswerViewModel(
-                    image: surveyResult.answers[0].image,
-                    answer: surveyResult.answers[0].answer,
-                    isCurrentAnswer: surveyResult.answers[0].isCurrentAnswer,
-                    percent: '${surveyResult.answers[0].percent}%'),
+                    image: loadResult.answers[0].image,
+                    answer: loadResult.answers[0].answer,
+                    isCurrentAnswer: loadResult.answers[0].isCurrentAnswer,
+                    percent: '${loadResult.answers[0].percent}%'),
                 SurveyAnswerViewModel(
-                    answer: surveyResult.answers[1].answer,
-                    isCurrentAnswer: surveyResult.answers[1].isCurrentAnswer,
-                    percent: '${surveyResult.answers[1].percent}%')
+                    answer: loadResult.answers[1].answer,
+                    isCurrentAnswer: loadResult.answers[1].isCurrentAnswer,
+                    percent: '${loadResult.answers[1].percent}%')
               ]))));
 
       await sut.loadData();
@@ -123,6 +133,28 @@ void main() {
       await sut.save(answer: answer);
 
       verify(saveSurveyResult.save(answer: answer)).called(1);
+    });
+
+    test('Should emit correct events/streams on success', () async {
+      expectLater(sut.isLoadingStream, emitsInOrder([true, false]));
+      sut.surveyResultStream.listen(expectAsync1((result) => expect(
+          result,
+          SurveyResultViewModel(
+              surveyId: saveResult.surveyId,
+              question: saveResult.question,
+              answers: [
+                SurveyAnswerViewModel(
+                    image: saveResult.answers[0].image,
+                    answer: saveResult.answers[0].answer,
+                    isCurrentAnswer: saveResult.answers[0].isCurrentAnswer,
+                    percent: '${saveResult.answers[0].percent}%'),
+                SurveyAnswerViewModel(
+                    answer: saveResult.answers[1].answer,
+                    isCurrentAnswer: saveResult.answers[1].isCurrentAnswer,
+                    percent: '${saveResult.answers[1].percent}%')
+              ]))));
+
+      await sut.save(answer: answer);
     });
   });
 }
