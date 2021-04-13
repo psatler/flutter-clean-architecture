@@ -22,14 +22,40 @@
 A survey app developed with clean architecture and SOLID principles in mind
 
 
+## Table of Contents
+
+<details>
+<summary>Table of Contents</summary>
+<br>
+
+<!-- - [How to Run](#running-the-app-via-usb) -->
+- [Version](#version)
+- [Backend](#backend)
+- [Third party packages](#third-party-packages)
+  - [dependencies](#dependencies)
+  - [dev-dependencies](#dev-dependencies)
+- [Screens of the app](#Screens)
+- [VSCode configurations](#vscode-configurations)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
+
+</details>
+
+
+
+
 ## Version
 
 This was originally built using Flutter 1.22.6 and on March 3rd was upgraded to Flutter 2.0.0. Though, the code was not migrated
 to _null safety_ yet.
 
+[Back to top](#flutter-clean-architecture)
+
 ## Backend
 
 The swagger documentation for the backend the app communicate with can be found [here](http://fordevs.herokuapp.com/api-docs/#/) 
+
+[Back to top](#flutter-clean-architecture)
 
 ## Third party packages
 
@@ -63,6 +89,36 @@ The swagger documentation for the backend the app communicate with can be found 
   - you need to run the command specified in the [library's docs](https://pub.dev/packages/flutter_launcher_icons#book-guide): `flutter pub run flutter_launcher_icons:main`
 
 
+[Back to top](#flutter-clean-architecture)
+
+## Screens
+
+#### Login and SignUp 
+
+<p align="center" style="display: flex; align-items: center; justify-content: space-around;">
+    <img alt="flutter" src="./screenshots/1_login_page.jpeg" width="150px" />
+    <img alt="flutter" src="./screenshots/2_sign_up_page.jpeg" width="150px" />
+    <img alt="flutter" src="./screenshots/3_login_validation.jpeg" width="150px" />
+    <img alt="flutter" src="./screenshots/4_logging_in.jpeg" width="150px" />
+</p>
+
+#### Surveys
+
+Answered and not already answered.
+
+<p align="center" style="display: flex; align-items: center; justify-content: space-around;">
+    <img alt="flutter" src="./screenshots/5_unanswered_question.jpeg" width="150px" />
+    <img alt="flutter" src="./screenshots/6_answered_question.jpeg" width="150px" />
+</p>
+
+#### Survey results
+
+<p align="center" style="display: flex; align-items: center; justify-content: space-around;">
+    <img alt="flutter" src="./screenshots/5_unanswered_question_results.jpeg" width="150px" />
+    <img alt="flutter" src="./screenshots/6_answered_question_results.jpeg" width="150px" />
+</p>
+
+[Back to top](#flutter-clean-architecture)
 
 ## VSCode configurations
 
@@ -124,8 +180,16 @@ create a `dart.json` file. The snippet create use `darttest` as a shortcut.
 }
 ```
 
+[Back to top](#flutter-clean-architecture)
 
 ## Aknowledgements
 
 - [This article](https://medium.com/flutter-community/flutter-design-patterns-0-introduction-5e88cfff6792) shows several design patterns applied to Flutter.
+- CI workflow: [here](https://youtu.be/rpQKpXjH5vs) and [here](https://youtu.be/kR0N_Ecv_b0)
 
+[Back to top](#flutter-clean-architecture)
+
+## License
+This project is licensed under the terms of the [MIT License](https://opensource.org/licenses/MIT) © Pablo Satler 2021
+
+[Back to top](#flutter-clean-architecture)
