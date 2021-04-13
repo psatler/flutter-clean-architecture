@@ -13,6 +13,8 @@
 
   <img alt="License" src="https://img.shields.io/github/license/psatler/flutter-clean-architecture?color=blue">
 
+  [![CI Workflow](https://github.com/psatler/flutter-clean-architecture/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/psatler/flutter-clean-architecture/actions/workflows/ci.yml)
+  
 </p>
 
 # Flutter Clean Architecture
